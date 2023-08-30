@@ -90,40 +90,28 @@ the following data set:
 
 ``` r
 climate <- read_table("http://climate.nasa.gov/system/internal_resources/details/original/647_Global_Temperature_Data_File.txt",
-           skip = 2,
-           na="NA")
-```
-
-    ## 
-    ## ── Column specification ────────────────────────────────────────────────────────
-    ## cols(
-    ##   Year = col_character(),
-    ##   No_Smoothing = col_double(),
-    ##   `Lowess(5)` = col_double()
-    ## )
-
-    ## Warning: 1 parsing failure.
-    ## row col  expected    actual                                                                                                      file
-    ##   1  -- 3 columns 1 columns 'http://climate.nasa.gov/system/internal_resources/details/original/647_Global_Temperature_Data_File.txt'
-
-``` r
+           col_names = c("year", "annual_average", "five_year_average"),
+           na="NA",
+           col_types = ('ddd'),
+           skip = 5
+           )
 climate
 ```
 
-    ## # A tibble: 143 × 3
-    ##    Year                         No_Smoothing `Lowess(5)`
-    ##    <chr>                               <dbl>       <dbl>
-    ##  1 ----------------------------        NA          NA   
-    ##  2 1880                                -0.16       -0.09
-    ##  3 1881                                -0.08       -0.13
-    ##  4 1882                                -0.11       -0.16
-    ##  5 1883                                -0.17       -0.2 
-    ##  6 1884                                -0.28       -0.24
-    ##  7 1885                                -0.33       -0.26
-    ##  8 1886                                -0.31       -0.27
-    ##  9 1887                                -0.36       -0.27
-    ## 10 1888                                -0.17       -0.26
-    ## # ℹ 133 more rows
+    ## # A tibble: 142 × 3
+    ##     year annual_average five_year_average
+    ##    <dbl>          <dbl>             <dbl>
+    ##  1  1880          -0.16             -0.09
+    ##  2  1881          -0.08             -0.13
+    ##  3  1882          -0.11             -0.16
+    ##  4  1883          -0.17             -0.2 
+    ##  5  1884          -0.28             -0.24
+    ##  6  1885          -0.33             -0.26
+    ##  7  1886          -0.31             -0.27
+    ##  8  1887          -0.36             -0.27
+    ##  9  1888          -0.17             -0.26
+    ## 10  1889          -0.1              -0.25
+    ## # ℹ 132 more rows
 
 ## Question 3:
 
@@ -131,12 +119,14 @@ Plot the trend in global mean temperatures over time. Describe what you
 see in the plot and how you interpret the patterns you observe.
 
 ``` r
-plot(climate$Year,climate$No_Smoothing)
+ggplot(climate,aes(x= year, y = annual_average)) + geom_line()
 ```
 
-    ## Warning in xy.coords(x, y, xlabel, ylabel, log): NAs introduced by coercion
-
 ![](climate_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+``` r
+#plot(climate$year,climate$annual_average)
+```
 
 ## Question 4: Evaluating the evidence for a “Pause” in warming?
 
@@ -175,12 +165,14 @@ global temperature change by performing regression analysis.
   why.
 
 ``` r
-plot(climate$Year,climate$`Lowess(5)`)
+ggplot(climate,aes(x= year, y = five_year_average)) + geom_line()
 ```
 
-    ## Warning in xy.coords(x, y, xlabel, ylabel, log): NAs introduced by coercion
-
 ![](climate_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+``` r
+#ggplot(co2, aes(x = decimal_date, y = monthly_average)) + geom_line() 
+```
 
 # Exercise II: Melting Ice Sheets?
 

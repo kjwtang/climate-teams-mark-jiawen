@@ -62,8 +62,11 @@ Construct the necessary R code to import and prepare for manipulation the follow
 
 ```{r}
 climate <- read_table("http://climate.nasa.gov/system/internal_resources/details/original/647_Global_Temperature_Data_File.txt",
-           skip = 2,
-           na="NA")
+           col_names = c("year", "annual_average", "five_year_average"),
+           na="NA",
+           col_types = ('ddd'),
+           skip = 5
+           )
 climate
 ```
 
@@ -73,7 +76,8 @@ climate
 Plot the trend in global mean temperatures over time.  Describe what you see in the plot and how you interpret the patterns you observe.
 
 ```{r}
-plot(climate$Year,climate$No_Smoothing)
+ggplot(climate,aes(x= year, y = annual_average)) + geom_line()
+#plot(climate$year,climate$annual_average)
 ```
 
 
@@ -94,7 +98,8 @@ By looking at the data, I did not find evidence in support of such a hiatus arou
 - Plot the different averages and describe what differences you see and why.  
 
 ```{r}
-plot(climate$Year,climate$`Lowess(5)`)
+ggplot(climate,aes(x= year, y = five_year_average)) + geom_line()
+#ggplot(co2, aes(x = decimal_date, y = monthly_average)) + geom_line() 
 ```
 
 
