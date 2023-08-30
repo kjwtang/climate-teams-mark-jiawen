@@ -1,6 +1,6 @@
 ---
-title: "Climate Exercise"
-author: "Carl Boettiger & Dana Seidel"
+title: "Mark and Jiawen Climate Project"
+author: "Carl Boettiger & Dana Seidel & Mark Sun & Jiawen Tang"
 output: github_document
 ---
 

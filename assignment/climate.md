@@ -1,16 +1,14 @@
-Climate Exercise
+Mark and Jiawen Climate Project
 ================
-Carl Boettiger & Dana Seidel
+Carl Boettiger & Dana Seidel & Mark Sun & Jiawen Tang
 
 # Unit I: Climate Change Module
 
 ## Warm-up exercise: Examining CO2 trends in R
 
-  - Example from <http://climate.nasa.gov/vital-signs/carbon-dioxide/>
-  - Raw data from
-    <ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt>
-
-<!-- end list -->
+- Example from <http://climate.nasa.gov/vital-signs/carbon-dioxide/>
+- Raw data from
+  <https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt>
 
 ``` r
 library(tidyverse)
@@ -18,28 +16,41 @@ library(tidyverse)
 
 ``` r
 co2 <- 
-read_table("ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt", 
+read_table("https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt", 
                   comment="#",
                   col_names = c("year", "month", "decimal_date", "average",
                                 "interpolated", "trend", "days"),
                   na = c("-1", "-99.99"))
+```
+
+    ## Warning: 785 parsing failures.
+    ## row col  expected    actual                                                          file
+    ##   1  -- 7 columns 8 columns 'https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt'
+    ##   2  -- 7 columns 8 columns 'https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt'
+    ##   3  -- 7 columns 8 columns 'https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt'
+    ##   4  -- 7 columns 8 columns 'https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt'
+    ##   5  -- 7 columns 8 columns 'https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt'
+    ## ... ... ......... ......... .............................................................
+    ## See problems(...) for more details.
+
+``` r
 co2
 ```
 
-    ## # A tibble: 725 x 7
+    ## # A tibble: 785 × 7
     ##     year month decimal_date average interpolated trend  days
-    ##    <int> <int>        <dbl>   <dbl>        <dbl> <dbl> <int>
-    ##  1  1958     3        1958.    316.         316.  315.    NA
-    ##  2  1958     4        1958.    317.         317.  315.    NA
-    ##  3  1958     5        1958.    318.         318.  315.    NA
-    ##  4  1958     6        1958.     NA          317.  315.    NA
-    ##  5  1958     7        1959.    316.         316.  315.    NA
-    ##  6  1958     8        1959.    315.         315.  316.    NA
-    ##  7  1958     9        1959.    313.         313.  316.    NA
-    ##  8  1958    10        1959.     NA          313.  316.    NA
-    ##  9  1958    11        1959.    313.         313.  315.    NA
-    ## 10  1958    12        1959.    315.         315.  316.    NA
-    ## # ... with 715 more rows
+    ##    <dbl> <dbl>        <dbl>   <dbl>        <dbl> <dbl> <dbl>
+    ##  1  1958     3        1958.    316.         314.    NA -9.99
+    ##  2  1958     4        1958.    317.         315.    NA -9.99
+    ##  3  1958     5        1958.    318.         315.    NA -9.99
+    ##  4  1958     6        1958.    317.         315.    NA -9.99
+    ##  5  1958     7        1959.    316.         315.    NA -9.99
+    ##  6  1958     8        1959.    315.         316.    NA -9.99
+    ##  7  1958     9        1959.    313.         316.    NA -9.99
+    ##  8  1958    10        1959.    312.         315.    NA -9.99
+    ##  9  1958    11        1959.    313.         315.    NA -9.99
+    ## 10  1958    12        1959.    315.         315.    NA -9.99
+    ## # ℹ 775 more rows
 
 ``` r
 ggplot(co2, aes(x = decimal_date, y = average)) + geom_line() 
@@ -52,7 +63,7 @@ Which months are the CO2 values at the maximum? Minimum? Why is this?
 What rolling average is used in computing the “trend” line? How does the
 trend depend on the rolling average?
 
------
+------------------------------------------------------------------------
 
 # Exercise I: Temperature Data
 
@@ -68,10 +79,10 @@ documentation provided. Describe what kind of column each data contains
 and what units it is measured in. Then address our three key questions
 in understanding this data:
 
-  - How are the measurements made? What is the associated measurement
-    uncertainty?
-  - What is the resolution of the data?
-  - Are their missing values? How should they be handled?
+- How are the measurements made? What is the associated measurement
+  uncertainty?
+- What is the resolution of the data?
+- Are their missing values? How should they be handled?
 
 ## Question 2:
 
@@ -91,9 +102,9 @@ Report](https://www.ipcc.ch/pdf/assessment-report/ar5/wg1/WG1AR5_SummaryVolume_F
 included a tentative observation of a “much smaller increasing trend” in
 global mean temperatures since 1998 than was observed previously. This
 led to much discussion in the media about the existence of a “Pause” or
-“Hiatus” in global warming rates, as well as much research looking
-into where the extra heat could have gone. (Examples discussing this
-question include articles in [The
+“Hiatus” in global warming rates, as well as much research looking into
+where the extra heat could have gone. (Examples discussing this question
+include articles in [The
 Guardian](http://www.theguardian.com/environment/2015/jun/04/global-warming-hasnt-paused-study-finds),
 [BBC News](http://www.bbc.com/news/science-environment-28870988), and
 [Wikipedia](https://en.wikipedia.org/wiki/Global_warming_hiatus)).
@@ -107,24 +118,24 @@ your arguments?
 
 ## Question 5: Rolling averages
 
-  - What is the meaning of “5 year average” vs “annual average”?
-  - Construct 5 year averages from the annual data. Construct 10 &
-    20-year averages.
-  - Plot the different averages and describe what differences you see
-    and why.
+- What is the meaning of “5 year average” vs “annual average”?
+- Construct 5 year averages from the annual data. Construct 10 & 20-year
+  averages.
+- Plot the different averages and describe what differences you see and
+  why.
 
 # Exercise II: Melting Ice Sheets?
 
-  - Data description: <http://climate.nasa.gov/vital-signs/land-ice/>
-  - Raw data file:
-    <http://climate.nasa.gov/system/internal_resources/details/original/499_GRN_ANT_mass_changes.csv>
+- Data description: <http://climate.nasa.gov/vital-signs/land-ice/>
+- Raw data file:
+  <http://climate.nasa.gov/system/internal_resources/details/original/499_GRN_ANT_mass_changes.csv>
 
 ## Question 1:
 
-  - Describe the data set: what are the columns and units? Where do the
-    numbers come from?
-  - What is the uncertainty in measurment? Resolution of the data?
-    Interpretation of missing values?
+- Describe the data set: what are the columns and units? Where do the
+  numbers come from?
+- What is the uncertainty in measurment? Resolution of the data?
+  Interpretation of missing values?
 
 ## Question 2:
 
@@ -137,16 +148,16 @@ Plot the data and describe the trends you observe.
 
 # Exercise III: Rising Sea Levels?
 
-  - Data description: <http://climate.nasa.gov/vital-signs/sea-level/>
-  - Raw data file:
-    <http://climate.nasa.gov/system/internal_resources/details/original/121_Global_Sea_Level_Data_File.txt>
+- Data description: <http://climate.nasa.gov/vital-signs/sea-level/>
+- Raw data file:
+  <http://climate.nasa.gov/system/internal_resources/details/original/121_Global_Sea_Level_Data_File.txt>
 
 ## Question 1:
 
-  - Describe the data set: what are the columns and units?
-  - Where do these data come from?
-  - What is the uncertainty in measurment? Resolution of the data?
-    Interpretation of missing values?
+- Describe the data set: what are the columns and units?
+- Where do these data come from?
+- What is the uncertainty in measurment? Resolution of the data?
+  Interpretation of missing values?
 
 ## Question 2:
 
@@ -155,20 +166,19 @@ object.
 
 ## Question 3:
 
-Plot the data and describe the trends you
-    observe.
+Plot the data and describe the trends you observe.
 
 # Exercise IV: Arctic Sea Ice?
 
-  - <http://nsidc.org/data/G02135>
-  - <ftp://sidads.colorado.edu/DATASETS/NOAA/G02135/north/daily/data/N_seaice_extent_daily_v3.0.csv>
+- <http://nsidc.org/data/G02135>
+- <ftp://sidads.colorado.edu/DATASETS/NOAA/G02135/north/daily/data/N_seaice_extent_daily_v3.0.csv>
 
 ## Question 1:
 
-  - Describe the data set: what are the columns and units?
-  - Where do these data come from?
-  - What is the uncertainty in measurement? Resolution of the data?
-    Interpretation of missing values?
+- Describe the data set: what are the columns and units?
+- Where do these data come from?
+- What is the uncertainty in measurement? Resolution of the data?
+  Interpretation of missing values?
 
 ## Question 2:
 
@@ -191,21 +201,20 @@ CO2 levels. To do this, we need another approach.
 
 Vostok Core, back to 400,000 yrs before present day
 
-  - Description of data set:
-    <http://cdiac.esd.ornl.gov/trends/co2/vostok.html>
-  - Data source:
-    <http://cdiac.ornl.gov/ftp/trends/co2/vostok.icecore.co2>
+- Description of data set:
+  <http://cdiac.esd.ornl.gov/trends/co2/vostok.html>
+- Data source: <http://cdiac.ornl.gov/ftp/trends/co2/vostok.icecore.co2>
 
 ## Questions / Tasks:
 
-  - Describe the data set: what are the columns and units? Where do the
-    numbers come from?
-  - What is the uncertainty in measurment? Resolution of the data?
-    Interpretation of missing values?
-  - Read in and prepare data for analysis.
-  - Reverse the ordering to create a chronological record.  
-  - Plot data
-  - Consider various smoothing windowed averages of the data.
-  - Join this series to Mauna Loa data
-  - Plot joined data
-  - Describe your conclusions
+- Describe the data set: what are the columns and units? Where do the
+  numbers come from?
+- What is the uncertainty in measurment? Resolution of the data?
+  Interpretation of missing values?
+- Read in and prepare data for analysis.
+- Reverse the ordering to create a chronological record.  
+- Plot data
+- Consider various smoothing windowed averages of the data.
+- Join this series to Mauna Loa data
+- Plot joined data
+- Describe your conclusions
