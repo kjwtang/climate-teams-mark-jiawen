@@ -22,15 +22,15 @@ library(tidyverse)
 co2 <- 
 read_table("https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt", 
                   comment="#",
-                  col_names = c("year", "month", "decimal_date", "average",
-                                "interpolated", "trend", "days"),
-                  na = c("-1", "-99.99"))
+                  col_names = c("year", "month", "decimal_date", "monthly_average",
+                                "interpolated", "days","std", "uncertainty"),
+                  na = c("-1", "-9.99","-0.99"))
 co2
 ```
 
 
 ```{r}
-ggplot(co2, aes(x = decimal_date, y = average)) + geom_line() 
+ggplot(co2, aes(x = decimal_date, y = monthly_average)) + geom_line() 
 
 ```
 
@@ -117,7 +117,9 @@ plot(climate$Year,climate$`Lowess(5)`)
 Construct the necessary R code to import this data set as a tidy `Table` object.
 
 ```{r}
-
+Ice<-read_csv("http://climate.nasa.gov/system/internal_resources/details/original/499_GRN_ANT_mass_changes.csv",
+         skip = 9)
+Ice
 ```
 
 
@@ -125,6 +127,9 @@ Construct the necessary R code to import this data set as a tidy `Table` object.
 ## Question 3:
 
 Plot the data and describe the trends you observe.
+```{r}
+plot(Ice$`TIME (year.decimal)`,Ice$`Greenland mass (Gt)`)
+```
 
 
 

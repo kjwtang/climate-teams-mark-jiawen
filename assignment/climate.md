@@ -18,42 +18,29 @@ library(tidyverse)
 co2 <- 
 read_table("https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt", 
                   comment="#",
-                  col_names = c("year", "month", "decimal_date", "average",
-                                "interpolated", "trend", "days"),
-                  na = c("-1", "-99.99"))
-```
-
-    ## Warning: 785 parsing failures.
-    ## row col  expected    actual                                                          file
-    ##   1  -- 7 columns 8 columns 'https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt'
-    ##   2  -- 7 columns 8 columns 'https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt'
-    ##   3  -- 7 columns 8 columns 'https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt'
-    ##   4  -- 7 columns 8 columns 'https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt'
-    ##   5  -- 7 columns 8 columns 'https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt'
-    ## ... ... ......... ......... .............................................................
-    ## See problems(...) for more details.
-
-``` r
+                  col_names = c("year", "month", "decimal_date", "monthly_average",
+                                "interpolated", "days","std", "uncertainty"),
+                  na = c("-1", "-9.99","-0.99"))
 co2
 ```
 
-    ## # A tibble: 785 × 7
-    ##     year month decimal_date average interpolated trend  days
-    ##    <dbl> <dbl>        <dbl>   <dbl>        <dbl> <dbl> <dbl>
-    ##  1  1958     3        1958.    316.         314.    NA -9.99
-    ##  2  1958     4        1958.    317.         315.    NA -9.99
-    ##  3  1958     5        1958.    318.         315.    NA -9.99
-    ##  4  1958     6        1958.    317.         315.    NA -9.99
-    ##  5  1958     7        1959.    316.         315.    NA -9.99
-    ##  6  1958     8        1959.    315.         316.    NA -9.99
-    ##  7  1958     9        1959.    313.         316.    NA -9.99
-    ##  8  1958    10        1959.    312.         315.    NA -9.99
-    ##  9  1958    11        1959.    313.         315.    NA -9.99
-    ## 10  1958    12        1959.    315.         315.    NA -9.99
+    ## # A tibble: 785 × 8
+    ##     year month decimal_date monthly_average interpolated  days   std uncertainty
+    ##    <dbl> <dbl>        <dbl>           <dbl>        <dbl> <dbl> <dbl>       <dbl>
+    ##  1  1958     3        1958.            316.         314.    NA    NA          NA
+    ##  2  1958     4        1958.            317.         315.    NA    NA          NA
+    ##  3  1958     5        1958.            318.         315.    NA    NA          NA
+    ##  4  1958     6        1958.            317.         315.    NA    NA          NA
+    ##  5  1958     7        1959.            316.         315.    NA    NA          NA
+    ##  6  1958     8        1959.            315.         316.    NA    NA          NA
+    ##  7  1958     9        1959.            313.         316.    NA    NA          NA
+    ##  8  1958    10        1959.            312.         315.    NA    NA          NA
+    ##  9  1958    11        1959.            313.         315.    NA    NA          NA
+    ## 10  1958    12        1959.            315.         315.    NA    NA          NA
     ## # ℹ 775 more rows
 
 ``` r
-ggplot(co2, aes(x = decimal_date, y = average)) + geom_line() 
+ggplot(co2, aes(x = decimal_date, y = monthly_average)) + geom_line() 
 ```
 
 ![](climate_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
@@ -213,9 +200,47 @@ plot(climate$Year,climate$`Lowess(5)`)
 Construct the necessary R code to import this data set as a tidy `Table`
 object.
 
+``` r
+Ice<-read_csv("http://climate.nasa.gov/system/internal_resources/details/original/499_GRN_ANT_mass_changes.csv",
+         skip = 9)
+```
+
+    ## Rows: 140 Columns: 3
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## dbl (3): TIME (year.decimal), Greenland mass (Gt), Antarctica mass (Gt)
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+Ice
+```
+
+    ## # A tibble: 140 × 3
+    ##    `TIME (year.decimal)` `Greenland mass (Gt)` `Antarctica mass (Gt)`
+    ##                    <dbl>                 <dbl>                  <dbl>
+    ##  1                 2002.                 1491.                   967.
+    ##  2                 2002.                 1486.                   979.
+    ##  3                 2003.                 1287.                   512.
+    ##  4                 2003.                 1258.                   859.
+    ##  5                 2003.                 1257.                   694.
+    ##  6                 2003.                 1288.                   592.
+    ##  7                 2003.                 1337.                   658.
+    ##  8                 2003.                 1354.                   477.
+    ##  9                 2003.                 1363.                   546.
+    ## 10                 2003.                 1427.                   494.
+    ## # ℹ 130 more rows
+
 ## Question 3:
 
 Plot the data and describe the trends you observe.
+
+``` r
+plot(Ice$`TIME (year.decimal)`,Ice$`Greenland mass (Gt)`)
+```
+
+![](climate_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 # Exercise III: Rising Sea Levels?
 
