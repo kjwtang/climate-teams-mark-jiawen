@@ -54,15 +54,28 @@ Describe the data set to the best of your ability given the documentation provid
 - What is the resolution of the data?
 - Are their missing values? How should they be handled?
 
+The data source is NASA/GISS. While the article doesn't articulate how the measurements are made,it is likely they study ice cores to construct past global mean temperature.The associated measurement uncertainty may be inherent difficulty to make exact predictions. The resolution of the data, which refers to "the period of time represented by each data point that is collected for the report", is a year, since every data point corresponds to each year's annual mean temp. The data set is complete (no missing values), if there are, they may be represented with "NA" and wiill not be considered in analysis.
 
 ## Question 2:
 
 Construct the necessary R code to import and prepare for manipulation the following data set: <http://climate.nasa.gov/system/internal_resources/details/original/647_Global_Temperature_Data_File.txt>
 
+```{r}
+climate <- read_table("http://climate.nasa.gov/system/internal_resources/details/original/647_Global_Temperature_Data_File.txt",
+           skip = 2,
+           na="NA")
+climate
+```
+
 
 ## Question 3:
 
 Plot the trend in global mean temperatures over time.  Describe what you see in the plot and how you interpret the patterns you observe.
+
+```{r}
+plot(climate$Year,climate$No_Smoothing)
+```
+
 
 
 ## Question 4: Evaluating the evidence for a "Pause" in warming?
@@ -70,14 +83,19 @@ Plot the trend in global mean temperatures over time.  Describe what you see in 
 The [2013 IPCC Report](https://www.ipcc.ch/pdf/assessment-report/ar5/wg1/WG1AR5_SummaryVolume_FINAL.pdf) included a tentative observation of a "much smaller increasing trend" in global mean temperatures since 1998 than was observed previously.  This led to much discussion in the media about the existence of a "Pause" or "Hiatus" in global warming rates, as well as much research looking into where the extra heat could have gone.  (Examples discussing this question include articles in [The Guardian](http://www.theguardian.com/environment/2015/jun/04/global-warming-hasnt-paused-study-finds), [BBC News](http://www.bbc.com/news/science-environment-28870988), and [Wikipedia](https://en.wikipedia.org/wiki/Global_warming_hiatus)). 
 
 By examining the data here, what evidence do you find or not find for such a pause?  Present an analysis of this data (using the tools & methods we have covered in Foundation course so far) to argue your case.  
-
 What additional analyses or data sources would better help you refine your arguments?
+
+By looking at the data, I did not find evidence in support of such a hiatus around 1998. The graph above showing global mean temperatures over time depicts a rather consistent, steady raise in global mean temperature since 1998.There is not a pause or decrease in the trend. Some additional analysis that may help could be determining the rate of global temperature change by performing regression analysis.
 
 ## Question 5: Rolling averages
     
 - What is the meaning of "5 year average" vs "annual average"?
 - Construct 5 year averages from the annual data.  Construct 10 & 20-year averages. 
 - Plot the different averages and describe what differences you see and why.  
+
+```{r}
+plot(climate$Year,climate$`Lowess(5)`)
+```
 
 
 
@@ -97,6 +115,12 @@ What additional analyses or data sources would better help you refine your argum
 ## Question 2:
 
 Construct the necessary R code to import this data set as a tidy `Table` object.
+
+```{r}
+
+```
+
+
 
 ## Question 3:
 

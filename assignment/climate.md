@@ -84,16 +84,71 @@ in understanding this data:
 - What is the resolution of the data?
 - Are their missing values? How should they be handled?
 
+The data source is NASA/GISS. While the article doesn’t articulate how
+the measurements are made,it is likely they study ice cores to construct
+past global mean temperature.The associated measurement uncertainty may
+be inherent difficulty to make exact predictions. The resolution of the
+data, which refers to “the period of time represented by each data point
+that is collected for the report”, is a year, since every data point
+corresponds to each year’s annual mean temp. The data set is complete
+(no missing values), if there are, they may be represented with “NA” and
+wiill not be considered in analysis.
+
 ## Question 2:
 
 Construct the necessary R code to import and prepare for manipulation
 the following data set:
 <http://climate.nasa.gov/system/internal_resources/details/original/647_Global_Temperature_Data_File.txt>
 
+``` r
+climate <- read_table("http://climate.nasa.gov/system/internal_resources/details/original/647_Global_Temperature_Data_File.txt",
+           skip = 2,
+           na="NA")
+```
+
+    ## 
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## cols(
+    ##   Year = col_character(),
+    ##   No_Smoothing = col_double(),
+    ##   `Lowess(5)` = col_double()
+    ## )
+
+    ## Warning: 1 parsing failure.
+    ## row col  expected    actual                                                                                                      file
+    ##   1  -- 3 columns 1 columns 'http://climate.nasa.gov/system/internal_resources/details/original/647_Global_Temperature_Data_File.txt'
+
+``` r
+climate
+```
+
+    ## # A tibble: 143 × 3
+    ##    Year                         No_Smoothing `Lowess(5)`
+    ##    <chr>                               <dbl>       <dbl>
+    ##  1 ----------------------------        NA          NA   
+    ##  2 1880                                -0.16       -0.09
+    ##  3 1881                                -0.08       -0.13
+    ##  4 1882                                -0.11       -0.16
+    ##  5 1883                                -0.17       -0.2 
+    ##  6 1884                                -0.28       -0.24
+    ##  7 1885                                -0.33       -0.26
+    ##  8 1886                                -0.31       -0.27
+    ##  9 1887                                -0.36       -0.27
+    ## 10 1888                                -0.17       -0.26
+    ## # ℹ 133 more rows
+
 ## Question 3:
 
 Plot the trend in global mean temperatures over time. Describe what you
 see in the plot and how you interpret the patterns you observe.
+
+``` r
+plot(climate$Year,climate$No_Smoothing)
+```
+
+    ## Warning in xy.coords(x, y, xlabel, ylabel, log): NAs introduced by coercion
+
+![](climate_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ## Question 4: Evaluating the evidence for a “Pause” in warming?
 
@@ -111,10 +166,17 @@ Guardian](http://www.theguardian.com/environment/2015/jun/04/global-warming-hasn
 
 By examining the data here, what evidence do you find or not find for
 such a pause? Present an analysis of this data (using the tools &
-methods we have covered in Foundation course so far) to argue your case.
-
+methods we have covered in Foundation course so far) to argue your
+case.  
 What additional analyses or data sources would better help you refine
 your arguments?
+
+By looking at the data, I did not find evidence in support of such a
+hiatus around 1998. The graph above showing global mean temperatures
+over time depicts a rather consistent, steady raise in global mean
+temperature since 1998.There is not a pause or decrease in the trend.
+Some additional analysis that may help could be determining the rate of
+global temperature change by performing regression analysis.
 
 ## Question 5: Rolling averages
 
@@ -123,6 +185,14 @@ your arguments?
   averages.
 - Plot the different averages and describe what differences you see and
   why.
+
+``` r
+plot(climate$Year,climate$`Lowess(5)`)
+```
+
+    ## Warning in xy.coords(x, y, xlabel, ylabel, log): NAs introduced by coercion
+
+![](climate_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 # Exercise II: Melting Ice Sheets?
 
