@@ -122,9 +122,12 @@ ggplot(climate,aes(x= year, y = five_year_average)) + geom_line()
 Construct the necessary R code to import this data set as a tidy `Table` object.
 
 ```{r}
-Ice<-read_csv("http://climate.nasa.gov/system/internal_resources/details/original/499_GRN_ANT_mass_changes.csv",
-         skip = 9)
-Ice
+IceMass<-read_csv("http://climate.nasa.gov/system/internal_resources/details/original/499_GRN_ANT_mass_changes.csv",
+              col_names = c("year","greenland","antarctica"),
+              col_types = ('ddd'),
+              skip = 10)
+IceMass
+
 ```
 
 
