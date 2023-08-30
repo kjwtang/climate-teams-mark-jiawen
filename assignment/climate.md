@@ -59,7 +59,8 @@ ggplot(co2, aes(x = decimal_date, y = average)) + geom_line()
 ![](climate_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 Which months are the CO2 values at the maximum? Minimum? Why is this?
-
+May is the maximum and October is the minimum; since 90% of the FF
+emission in northern hemisphere and photosynthesis will help reduce.
 What rolling average is used in computing the “trend” line? How does the
 trend depend on the rolling average?
 
