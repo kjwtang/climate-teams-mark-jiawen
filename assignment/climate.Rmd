@@ -35,9 +35,11 @@ ggplot(co2, aes(x = decimal_date)) +
   geom_line(aes(y=interpolated),col="red")
 
 ```
+
+
 ```{r}
 co2 |> pivot_longer(c("monthly_average","interpolated"),
-                    values_to = "co2",names_to = "type") 
+                    values_to = "co2",names_to = "type")
 #ggplot(aes(x=decimal_date,y=co2,col=type))+
   #geom_line()
 ```

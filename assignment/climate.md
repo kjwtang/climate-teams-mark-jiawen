@@ -49,7 +49,7 @@ ggplot(co2, aes(x = decimal_date)) +
 
 ``` r
 co2 |> pivot_longer(c("monthly_average","interpolated"),
-                    values_to = "co2",names_to = "type") 
+                    values_to = "co2",names_to = "type")
 ```
 
     ## # A tibble: 1,572 × 8
@@ -238,7 +238,7 @@ ggplot(climate,aes(x= year)) +
 
     ## Warning: Removed 19 rows containing missing values (`geom_line()`).
 
-![](climate_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
+![](climate_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
 
 # Exercise II: Melting Ice Sheets?
 
