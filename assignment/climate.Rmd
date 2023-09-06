@@ -30,8 +30,16 @@ co2
 
 
 ```{r}
-ggplot(co2, aes(x = decimal_date, y = monthly_average)) + geom_line() 
+ggplot(co2, aes(x = decimal_date)) + 
+  geom_line(aes(y=monthly_average),col="blue")+
+  geom_line(aes(y=interpolated),col="red")
 
+```
+```{r}
+co2 |> pivot_longer(c("monthly_average","interpolated"),
+                    values_to = "co2",names_to = "type") 
+#ggplot(aes(x=decimal_date,y=co2,col=type))+
+  #geom_line()
 ```
 
 Which months are the CO2 values at the maximum? Minimum?  Why is this?
@@ -76,7 +84,7 @@ climate
 Plot the trend in global mean temperatures over time.  Describe what you see in the plot and how you interpret the patterns you observe.
 
 ```{r}
-ggplot(climate,aes(x= year, y = annual_average)) + geom_line()
+
 #plot(climate$year,climate$annual_average)
 ```
 
@@ -134,9 +142,12 @@ ggplot(climate,aes(x= year)) +
 Construct the necessary R code to import this data set as a tidy `Table` object.
 
 ```{r}
-Ice<-read_csv("http://climate.nasa.gov/system/internal_resources/details/original/499_GRN_ANT_mass_changes.csv",
-         skip = 9)
-Ice
+IceMass<-read_csv("http://climate.nasa.gov/system/internal_resources/details/original/499_GRN_ANT_mass_changes.csv",
+              col_names = c("year","greenland","antarctica"),
+              col_types = ('ddd'),
+              skip = 10)
+IceMass
+
 ```
 
 
@@ -145,7 +156,7 @@ Ice
 
 Plot the data and describe the trends you observe.
 ```{r}
-plot(Ice$`TIME (year.decimal)`,Ice$`Greenland mass (Gt)`)
+
 ```
 
 
