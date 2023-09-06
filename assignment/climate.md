@@ -24,7 +24,7 @@ read_table("https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt",
 co2
 ```
 
-    ## # A tibble: 785 × 8
+    ## # A tibble: 786 × 8
     ##     year month decimal_date monthly_average interpolated  days   std uncertainty
     ##    <dbl> <dbl>        <dbl>           <dbl>        <dbl> <dbl> <dbl>       <dbl>
     ##  1  1958     3        1958.            316.         314.    NA    NA          NA
@@ -37,7 +37,7 @@ co2
     ##  8  1958    10        1959.            312.         315.    NA    NA          NA
     ##  9  1958    11        1959.            313.         315.    NA    NA          NA
     ## 10  1958    12        1959.            315.         315.    NA    NA          NA
-    ## # ℹ 775 more rows
+    ## # ℹ 776 more rows
 
 ``` r
 ggplot(co2, aes(x = decimal_date, y = monthly_average)) + geom_line() 
@@ -172,7 +172,52 @@ ggplot(climate,aes(x= year, y = five_year_average)) + geom_line()
 
 ``` r
 #ggplot(co2, aes(x = decimal_date, y = monthly_average)) + geom_line() 
+
+library(dplyr)
+library(zoo)
 ```
+
+    ## 
+    ## Attaching package: 'zoo'
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     as.Date, as.Date.numeric
+
+``` r
+#calculate 10-year & 20-year rolling average
+climate = climate %>%
+  mutate(ten_year_avg = rollmean(climate$annual_average, k=10, fill=NA, align='right'),
+         twenty_year_avg = rollmean(climate$annual_average, k=20, fill=NA, align='right'));
+climate
+```
+
+    ## # A tibble: 142 × 5
+    ##     year annual_average five_year_average ten_year_avg twenty_year_avg
+    ##    <dbl>          <dbl>             <dbl>        <dbl>           <dbl>
+    ##  1  1880          -0.16             -0.09       NA                  NA
+    ##  2  1881          -0.08             -0.13       NA                  NA
+    ##  3  1882          -0.11             -0.16       NA                  NA
+    ##  4  1883          -0.17             -0.2        NA                  NA
+    ##  5  1884          -0.28             -0.24       NA                  NA
+    ##  6  1885          -0.33             -0.26       NA                  NA
+    ##  7  1886          -0.31             -0.27       NA                  NA
+    ##  8  1887          -0.36             -0.27       NA                  NA
+    ##  9  1888          -0.17             -0.26       NA                  NA
+    ## 10  1889          -0.1              -0.25       -0.207              NA
+    ## # ℹ 132 more rows
+
+``` r
+ggplot(climate,aes(x= year)) + 
+  geom_line(aes(y = ten_year_avg), col = 'green') + 
+  geom_line(aes(y = twenty_year_avg), col = 'blue')
+```
+
+    ## Warning: Removed 9 rows containing missing values (`geom_line()`).
+
+    ## Warning: Removed 19 rows containing missing values (`geom_line()`).
+
+![](climate_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
 
 # Exercise II: Melting Ice Sheets?
 

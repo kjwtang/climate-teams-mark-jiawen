@@ -112,7 +112,7 @@ climate
 
 ggplot(climate,aes(x= year)) + 
   geom_line(aes(y = ten_year_avg), col = 'green') + 
-  geom_line(aes(y = twenty_year_avg), col = 'blue') +
+  geom_line(aes(y = twenty_year_avg), col = 'blue')
 ```
 
 
