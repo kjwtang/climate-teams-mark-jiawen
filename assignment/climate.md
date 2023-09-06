@@ -230,15 +230,19 @@ climate
 
 ``` r
 ggplot(climate,aes(x= year)) + 
-  geom_line(aes(y = ten_year_avg), col = 'green') + 
-  geom_line(aes(y = twenty_year_avg), col = 'blue')
+  geom_line(aes(y = ten_year_avg, color = 'ten')) + 
+  geom_line(aes(y = twenty_year_avg, color = 'twenty')) +
+  labs(y = "Temperature Change (C)", color = NULL) +
+  scale_color_manual(values = c(ten = "blue", twenty = "green"),
+                      labels = c(ten = "ten_year_avg", twenty = "twenty_year_avg"),
+                      limits = c("ten", "twenty"))
 ```
 
     ## Warning: Removed 9 rows containing missing values (`geom_line()`).
 
     ## Warning: Removed 19 rows containing missing values (`geom_line()`).
 
-![](climate_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
+![](climate_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
 
 # Exercise II: Melting Ice Sheets?
 
@@ -284,6 +288,16 @@ IceMass
 ## Question 3:
 
 Plot the data and describe the trends you observe.
+
+``` r
+ggplot(IceMass,aes(x= year)) + 
+  geom_line(aes(y = greenland, colour = 'Greenland' )) + 
+  geom_line(aes(y = antarctica, colour = 'Antarctica')) +
+  ggtitle('Icesheet mass change over time') +
+  labs(y = "Change of ice mass (Gt)", color = NULL)
+```
+
+![](climate_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 # Exercise III: Rising Sea Levels?
 
