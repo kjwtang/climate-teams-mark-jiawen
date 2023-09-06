@@ -100,8 +100,20 @@ By looking at the data, I did not find evidence in support of such a hiatus arou
 ```{r}
 ggplot(climate,aes(x= year, y = five_year_average)) + geom_line()
 #ggplot(co2, aes(x = decimal_date, y = monthly_average)) + geom_line() 
-```
 
+library(dplyr)
+library(zoo)
+
+#calculate 10-year & 20-year rolling average
+climate = climate %>%
+  mutate(ten_year_avg = rollmean(climate$annual_average, k=10, fill=NA, align='right'),
+         twenty_year_avg = rollmean(climate$annual_average, k=20, fill=NA, align='right'));
+climate
+
+ggplot(climate,aes(x= year)) + 
+  geom_line(aes(y = ten_year_avg), col = 'green') + 
+  geom_line(aes(y = twenty_year_avg), col = 'blue') +
+```
 
 
 
