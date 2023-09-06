@@ -24,7 +24,7 @@ read_table("https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt",
 co2
 ```
 
-    ## # A tibble: 785 × 8
+    ## # A tibble: 786 × 8
     ##     year month decimal_date monthly_average interpolated  days   std uncertainty
     ##    <dbl> <dbl>        <dbl>           <dbl>        <dbl> <dbl> <dbl>       <dbl>
     ##  1  1958     3        1958.            316.         314.    NA    NA          NA
@@ -37,13 +37,40 @@ co2
     ##  8  1958    10        1959.            312.         315.    NA    NA          NA
     ##  9  1958    11        1959.            313.         315.    NA    NA          NA
     ## 10  1958    12        1959.            315.         315.    NA    NA          NA
-    ## # ℹ 775 more rows
+    ## # ℹ 776 more rows
 
 ``` r
-ggplot(co2, aes(x = decimal_date, y = monthly_average)) + geom_line() 
+ggplot(co2, aes(x = decimal_date)) + 
+  geom_line(aes(y=monthly_average),col="blue")+
+  geom_line(aes(y=interpolated),col="red")
 ```
 
 ![](climate_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+``` r
+co2 |> pivot_longer(c("monthly_average","interpolated"),
+                    values_to = "co2",names_to = "type") 
+```
+
+    ## # A tibble: 1,572 × 8
+    ##     year month decimal_date  days   std uncertainty type              co2
+    ##    <dbl> <dbl>        <dbl> <dbl> <dbl>       <dbl> <chr>           <dbl>
+    ##  1  1958     3        1958.    NA    NA          NA monthly_average  316.
+    ##  2  1958     3        1958.    NA    NA          NA interpolated     314.
+    ##  3  1958     4        1958.    NA    NA          NA monthly_average  317.
+    ##  4  1958     4        1958.    NA    NA          NA interpolated     315.
+    ##  5  1958     5        1958.    NA    NA          NA monthly_average  318.
+    ##  6  1958     5        1958.    NA    NA          NA interpolated     315.
+    ##  7  1958     6        1958.    NA    NA          NA monthly_average  317.
+    ##  8  1958     6        1958.    NA    NA          NA interpolated     315.
+    ##  9  1958     7        1959.    NA    NA          NA monthly_average  316.
+    ## 10  1958     7        1959.    NA    NA          NA interpolated     315.
+    ## # ℹ 1,562 more rows
+
+``` r
+#ggplot(aes(x=decimal_date,y=co2,col=type))+
+  #geom_line()
+```
 
 Which months are the CO2 values at the maximum? Minimum? Why is this?
 May is the maximum and October is the minimum; since 90% of the FF
@@ -119,12 +146,6 @@ Plot the trend in global mean temperatures over time. Describe what you
 see in the plot and how you interpret the patterns you observe.
 
 ``` r
-ggplot(climate,aes(x= year, y = annual_average)) + geom_line()
-```
-
-![](climate_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
-
-``` r
 #plot(climate$year,climate$annual_average)
 ```
 
@@ -168,7 +189,7 @@ global temperature change by performing regression analysis.
 ggplot(climate,aes(x= year, y = five_year_average)) + geom_line()
 ```
 
-![](climate_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](climate_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ``` r
 #ggplot(co2, aes(x = decimal_date, y = monthly_average)) + geom_line() 
@@ -193,46 +214,31 @@ Construct the necessary R code to import this data set as a tidy `Table`
 object.
 
 ``` r
-Ice<-read_csv("http://climate.nasa.gov/system/internal_resources/details/original/499_GRN_ANT_mass_changes.csv",
-         skip = 9)
-```
-
-    ## Rows: 140 Columns: 3
-    ## ── Column specification ────────────────────────────────────────────────────────
-    ## Delimiter: ","
-    ## dbl (3): TIME (year.decimal), Greenland mass (Gt), Antarctica mass (Gt)
-    ## 
-    ## ℹ Use `spec()` to retrieve the full column specification for this data.
-    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-
-``` r
-Ice
+IceMass<-read_csv("http://climate.nasa.gov/system/internal_resources/details/original/499_GRN_ANT_mass_changes.csv",
+              col_names = c("year","greenland","antarctica"),
+              col_types = ('ddd'),
+              skip = 10)
+IceMass
 ```
 
     ## # A tibble: 140 × 3
-    ##    `TIME (year.decimal)` `Greenland mass (Gt)` `Antarctica mass (Gt)`
-    ##                    <dbl>                 <dbl>                  <dbl>
-    ##  1                 2002.                 1491.                   967.
-    ##  2                 2002.                 1486.                   979.
-    ##  3                 2003.                 1287.                   512.
-    ##  4                 2003.                 1258.                   859.
-    ##  5                 2003.                 1257.                   694.
-    ##  6                 2003.                 1288.                   592.
-    ##  7                 2003.                 1337.                   658.
-    ##  8                 2003.                 1354.                   477.
-    ##  9                 2003.                 1363.                   546.
-    ## 10                 2003.                 1427.                   494.
+    ##     year greenland antarctica
+    ##    <dbl>     <dbl>      <dbl>
+    ##  1 2002.     1491.       967.
+    ##  2 2002.     1486.       979.
+    ##  3 2003.     1287.       512.
+    ##  4 2003.     1258.       859.
+    ##  5 2003.     1257.       694.
+    ##  6 2003.     1288.       592.
+    ##  7 2003.     1337.       658.
+    ##  8 2003.     1354.       477.
+    ##  9 2003.     1363.       546.
+    ## 10 2003.     1427.       494.
     ## # ℹ 130 more rows
 
 ## Question 3:
 
 Plot the data and describe the trends you observe.
-
-``` r
-plot(Ice$`TIME (year.decimal)`,Ice$`Greenland mass (Gt)`)
-```
-
-![](climate_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 # Exercise III: Rising Sea Levels?
 
