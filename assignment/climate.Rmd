@@ -244,11 +244,11 @@ ArcticIce
 Plot the data and describe the trends you observe.
 ```{r}
 ggplot(ArcticIce,aes(x= Date)) + 
-  geom_line(aes(y = Extent, colour = 'Extent' )) + 
+  geom_line(aes(y = Extent, colour = 'Sea Ice' )) + 
   #geom_line(aes(y = Smoothed_60_days, colour = 'Smoothed_60')) +
   ggtitle(' Sea Ice Index ') +
   labs(y = "Sea Ice (10^6 sq km)", color = NULL) +
-  geom_smooth(aes(y = Extent), method=lm)
+  geom_smooth(aes(y = Extent, colour = 'trend'), method=lm)
 ```
 # Exercise V: Longer term trends in CO2 Records
 
