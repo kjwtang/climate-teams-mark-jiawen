@@ -317,9 +317,63 @@ ggplot(IceMass,aes(x= year)) +
 Construct the necessary R code to import this data set as a tidy `Table`
 object.
 
+``` r
+SeaLevel<-read_table("http://climate.nasa.gov/system/internal_resources/details/original/121_Global_Sea_Level_Data_File.txt",
+                     skip=45,
+                     col_names = c("a","b","year","d","e","f","g","h","GMSL","j","k","Smoothed_60_days"),
+                     na="99900")
+```
+
+    ## 
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## cols(
+    ##   a = col_double(),
+    ##   b = col_double(),
+    ##   year = col_double(),
+    ##   d = col_double(),
+    ##   e = col_double(),
+    ##   f = col_double(),
+    ##   g = col_double(),
+    ##   h = col_double(),
+    ##   GMSL = col_double(),
+    ##   j = col_double(),
+    ##   k = col_double(),
+    ##   Smoothed_60_days = col_double()
+    ## )
+
+``` r
+SeaLevel<- SeaLevel[ ,c('year', 'GMSL', 'Smoothed_60_days')]
+SeaLevel
+```
+
+    ## # A tibble: 847 × 3
+    ##     year  GMSL Smoothed_60_days
+    ##    <dbl> <dbl>            <dbl>
+    ##  1 1993. -13.5           -14.1 
+    ##  2 1993. -17.1           -14.7 
+    ##  3 1993. -17.1           -14.2 
+    ##  4 1993. -19.2           -14.2 
+    ##  5 1993. -13.8           -13.0 
+    ##  6 1993. -12.1           -11.8 
+    ##  7 1993. -11.8           -10.6 
+    ##  8 1993. -10.5            -9.73
+    ##  9 1993. -10.7            -9.12
+    ## 10 1993. -18.5            -8.76
+    ## # ℹ 837 more rows
+
 ## Question 3:
 
 Plot the data and describe the trends you observe.
+
+``` r
+ggplot(SeaLevel,aes(x= year)) + 
+  geom_line(aes(y = GMSL, colour = 'GMSL' )) + 
+  geom_line(aes(y = Smoothed_60_days, colour = 'Smoothed_60')) +
+  ggtitle('Global Mean Sea Level change over time') +
+  labs(y = "Change of sea level", color = NULL)
+```
+
+![](climate_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 # Exercise IV: Arctic Sea Ice?
 
