@@ -19,24 +19,24 @@ co2 <-
 read_table("https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt", 
                   comment="#",
                   col_names = c("year", "month", "decimal_date", "monthly_average",
-                                "interpolated", "days","std", "uncertainty"),
+                                "interpolated", "days","std", ""),
                   na = c("-1", "-9.99","-0.99"))
 co2
 ```
 
     ## # A tibble: 786 × 8
-    ##     year month decimal_date monthly_average interpolated  days   std uncertainty
-    ##    <dbl> <dbl>        <dbl>           <dbl>        <dbl> <dbl> <dbl>       <dbl>
-    ##  1  1958     3        1958.            316.         314.    NA    NA          NA
-    ##  2  1958     4        1958.            317.         315.    NA    NA          NA
-    ##  3  1958     5        1958.            318.         315.    NA    NA          NA
-    ##  4  1958     6        1958.            317.         315.    NA    NA          NA
-    ##  5  1958     7        1959.            316.         315.    NA    NA          NA
-    ##  6  1958     8        1959.            315.         316.    NA    NA          NA
-    ##  7  1958     9        1959.            313.         316.    NA    NA          NA
-    ##  8  1958    10        1959.            312.         315.    NA    NA          NA
-    ##  9  1958    11        1959.            313.         315.    NA    NA          NA
-    ## 10  1958    12        1959.            315.         315.    NA    NA          NA
+    ##     year month decimal_date monthly_average interpolated  days   std    ``
+    ##    <dbl> <dbl>        <dbl>           <dbl>        <dbl> <dbl> <dbl> <dbl>
+    ##  1  1958     3        1958.            316.         314.    NA    NA    NA
+    ##  2  1958     4        1958.            317.         315.    NA    NA    NA
+    ##  3  1958     5        1958.            318.         315.    NA    NA    NA
+    ##  4  1958     6        1958.            317.         315.    NA    NA    NA
+    ##  5  1958     7        1959.            316.         315.    NA    NA    NA
+    ##  6  1958     8        1959.            315.         316.    NA    NA    NA
+    ##  7  1958     9        1959.            313.         316.    NA    NA    NA
+    ##  8  1958    10        1959.            312.         315.    NA    NA    NA
+    ##  9  1958    11        1959.            313.         315.    NA    NA    NA
+    ## 10  1958    12        1959.            315.         315.    NA    NA    NA
     ## # ℹ 776 more rows
 
 ``` r
@@ -46,31 +46,6 @@ ggplot(co2, aes(x = decimal_date)) +
 ```
 
 ![](climate_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
-
-``` r
-co2 |> pivot_longer(c("monthly_average","interpolated"),
-                    values_to = "co2",names_to = "type")
-```
-
-    ## # A tibble: 1,572 × 8
-    ##     year month decimal_date  days   std uncertainty type              co2
-    ##    <dbl> <dbl>        <dbl> <dbl> <dbl>       <dbl> <chr>           <dbl>
-    ##  1  1958     3        1958.    NA    NA          NA monthly_average  316.
-    ##  2  1958     3        1958.    NA    NA          NA interpolated     314.
-    ##  3  1958     4        1958.    NA    NA          NA monthly_average  317.
-    ##  4  1958     4        1958.    NA    NA          NA interpolated     315.
-    ##  5  1958     5        1958.    NA    NA          NA monthly_average  318.
-    ##  6  1958     5        1958.    NA    NA          NA interpolated     315.
-    ##  7  1958     6        1958.    NA    NA          NA monthly_average  317.
-    ##  8  1958     6        1958.    NA    NA          NA interpolated     315.
-    ##  9  1958     7        1959.    NA    NA          NA monthly_average  316.
-    ## 10  1958     7        1959.    NA    NA          NA interpolated     315.
-    ## # ℹ 1,562 more rows
-
-``` r
-#ggplot(aes(x=decimal_date,y=co2,col=type))+
-  #geom_line()
-```
 
 Which months are the CO2 values at the maximum? Minimum? Why is this?
 May is the maximum and October is the minimum; since 90% of the FF
@@ -94,20 +69,19 @@ documentation provided. Describe what kind of column each data contains
 and what units it is measured in. Then address our three key questions
 in understanding this data:
 
-- How are the measurements made? What is the associated measurement
-  uncertainty?
+- How are the measurements made? What is the associated measurement ?
 - What is the resolution of the data?
 - Are their missing values? How should they be handled?
 
 The data source is NASA/GISS. While the article doesn’t articulate how
 the measurements are made,it is likely they study ice cores to construct
-past global mean temperature.The associated measurement uncertainty may
-be inherent difficulty to make exact predictions. The resolution of the
-data, which refers to “the period of time represented by each data point
-that is collected for the report”, is a year, since every data point
-corresponds to each year’s annual mean temp. The data set is complete
-(no missing values), if there are, they may be represented with “NA” and
-wiill not be considered in analysis.
+past global mean temperature.The associated measurement may be inherent
+difficulty to make exact predictions. The resolution of the data, which
+refers to “the period of time represented by each data point that is
+collected for the report”, is a year, since every data point corresponds
+to each year’s annual mean temp. The data set is complete (no missing
+values), if there are, they may be represented with “NA” and wiill not
+be considered in analysis.
 
 ## Question 2:
 
@@ -146,8 +120,14 @@ Plot the trend in global mean temperatures over time. Describe what you
 see in the plot and how you interpret the patterns you observe.
 
 ``` r
-#plot(climate$year,climate$annual_average)
+ggplot(climate, aes(x = year, y = annual_average)) + geom_line()
 ```
+
+![](climate_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+There is a annual variation in the temperature mean, but the trend is
+increasing after 1920 and with a stronger signal after 1960. It
+indicates the temperature is increase compare to average.
 
 ## Question 4: Evaluating the evidence for a “Pause” in warming?
 
@@ -179,7 +159,10 @@ global temperature change by performing regression analysis.
 
 ## Question 5: Rolling averages
 
-- What is the meaning of “5 year average” vs “annual average”?
+- What is the meaning of “5 year average” vs “annual average”? 5 year
+  average is the rolling average that smooth the annual variation signal
+  in the data, and compare to annual average, it shows a more smooth
+  trend of increase in temperature.
 - Construct 5 year averages from the annual data. Construct 10 & 20-year
   averages.
 - Plot the different averages and describe what differences you see and
@@ -189,7 +172,7 @@ global temperature change by performing regression analysis.
 ggplot(climate,aes(x= year, y = five_year_average)) + geom_line()
 ```
 
-![](climate_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](climate_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 #ggplot(co2, aes(x = decimal_date, y = monthly_average)) + geom_line() 
@@ -242,7 +225,11 @@ ggplot(climate,aes(x= year)) +
 
     ## Warning: Removed 19 rows containing missing values (`geom_line()`).
 
-![](climate_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
+![](climate_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+The data looks more flat as the average year increases, becoming more
+pronounced and losing some of the temperature fluctuations caused by
+special events.
 
 # Exercise II: Melting Ice Sheets?
 
@@ -253,11 +240,17 @@ ggplot(climate,aes(x= year)) +
 ## Question 1:
 
 - Describe the data set: what are the columns and units? Where do the
-  numbers come from?
-- What is the uncertainty in measurment? Resolution of the data?
-  Interpretation of missing values?
-
-## Question 2:
+  numbers come from? The columns are time in decimal year, greenland and
+  antarctica ice sheet mass in Giga tonnes. The data are collected NASA
+  GRACE and GRACE Follow-On satelite, which are gravitational satelites
+  that measure the land change by change of gravitational force.
+- What is the in measurment? Resolution of the data? Interpretation of
+  missing values? The GRACE mission ended in June 2017. The GRACE
+  Follow-On mission began collecting data in June 2018, with some lost
+  data in the middle. The record includes new data processing methods
+  and is constantly updated as more data comes in, with a delay of up to
+  two months. Ice sheet data are measured about 12 times a year. \##
+  Question 2:
 
 Construct the necessary R code to import this data set as a tidy `Table`
 object.
@@ -299,6 +292,11 @@ ggplot(IceMass,aes(x= year)) +
 
 ![](climate_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
+Both ice sheets showed a clear declining trend and the presence of
+seasons was evident. Greenland, which is located in the Arctic, was
+affected by positive feedback more, and the weight of the ice sheet
+dropped faster.
+
 # Exercise III: Rising Sea Levels?
 
 - Data description: <http://climate.nasa.gov/vital-signs/sea-level/>
@@ -307,10 +305,36 @@ ggplot(IceMass,aes(x= year)) +
 
 ## Question 1:
 
-- Describe the data set: what are the columns and units?
-- Where do these data come from?
-- What is the uncertainty in measurment? Resolution of the data?
-  Interpretation of missing values?
+- Describe the data set: what are the columns and units? There are 12
+  columns in the data set and we are only going to present 3 of them to
+  make the table clean and useful. The 12 columns are: HDR 1 altimeter
+  type 0=dual-frequency 999=single frequency (ie Poseidon-1) HDR 2
+  merged file cycle \# HDR 3 year+fraction of year (mid-cycle) HDR 4
+  number of observations HDR 5 number of weighted observations HDR 6
+  GMSL (Global Isostatic Adjustment (GIA) not applied) variation (mm)
+  with respect to TOPEX collinear mean reference HDR 7 standard
+  deviation of GMSL (GIA not applied) variation estimate (mm) HDR 8
+  smoothed (60-day Gaussian type filter) GMSL (GIA not applied)
+  variation (mm)  
+  HDR 9 GMSL (Global Isostatic Adjustment (GIA) applied) variation (mm)
+  with respect to TOPEX collinear mean reference HDR 10 standard
+  deviation of GMSL (GIA applied) variation estimate (mm) HDR 11
+  smoothed (60-day Gaussian type filter) GMSL (GIA applied)
+  variation (mm) HDR 12 smoothed (60-day Gaussian type filter) GMSL (GIA
+  applied) variation (mm); annual and semi-annual signal removed
+
+- Where do these data come from? The calculations were performed by
+  NASA’s Goddard Space Flight Center with support from NASA’s
+  Measurement Program. GMSL is generated using integrated multi-mission
+  ocean altimeter data. It combines sea surface heights from
+  TOPEX/Poseidon, Jason-1, and OSTM/Jason-2 into a common ground
+  reference frame.
+
+- What is the in measurement? Resolution of the data? Interpretation of
+  missing values? The data applies and places all inter-mission bias,
+  range, and geophysical corrections in a georeference orbit. This
+  creates a consistent data record throughout time, regardless of the
+  instrument used.
 
 ## Question 2:
 
@@ -370,10 +394,15 @@ ggplot(SeaLevel,aes(x= year)) +
   geom_line(aes(y = GMSL, colour = 'GMSL' )) + 
   geom_line(aes(y = Smoothed_60_days, colour = 'Smoothed_60')) +
   ggtitle('Global Mean Sea Level change over time') +
-  labs(y = "Change of sea level", color = NULL)
+  labs(y = "Change of sea level(mm)", color = NULL)
 ```
 
 ![](climate_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+The trend of sea level rise is very clear, and the seasonal and
+meteorological effects are very strong, as can be seen by comparing the
+rough curve. However, it has risen by about 10cm in 30 years, which is
+already a very obvious upward trend.
 
 # Exercise IV: Arctic Sea Ice?
 
@@ -383,18 +412,92 @@ ggplot(SeaLevel,aes(x= year)) +
 ## Question 1:
 
 - Describe the data set: what are the columns and units?
+
+There are 6 columns in the original file. Three of them are the time (in
+year, month, and day of each recording. One column represents the
+quantity (extent) of sea ice in 10^6 sq km. The other 2 columns
+indicates missing data and source of data. We expurgated the data and
+left only 2 columns: the time of recording and the extent of sea ice at
+that tiume.
+
 - Where do these data come from?
+
+The data come from NSIDC (National Snow and Ice Data Center)
+
 - What is the uncertainty in measurement? Resolution of the data?
   Interpretation of missing values?
+
+The uncertainty in measurement may arise from tiny inaccuracy of data
+measurment tools. Besides, the resort to time-series analysis may
+involve small extent of interpolation, so the measurement may not be
+exactly accurate and certain.The resolution of the data is 2 days, as
+each recording time is separated by 2 days.There is no missing values as
+they are all left as 0. In other words, this data sheet is consistent
+and complete.
 
 ## Question 2:
 
 Construct the necessary R code to import this data set as a tidy `Table`
 object.
 
+``` r
+ArcticIce<-read_csv("ftp://sidads.colorado.edu/DATASETS/NOAA/G02135/north/daily/data/N_seaice_extent_daily_v3.0.csv",
+              #col_names = c("year","greenland","antarctica"),
+              col_types = ('ddddd'),
+              skip = 0 )
+```
+
+    ## Warning: One or more parsing issues, call `problems()` on your data frame for details,
+    ## e.g.:
+    ##   dat <- vroom(...)
+    ##   problems(dat)
+
+``` r
+ArcticIce$Date<-as.Date(with(ArcticIce,paste(Year,Month,Day,sep="-")),"%Y-%m-%d")
+ArcticIce <- ArcticIce [ ,c('Date', 'Extent') ]
+ArcticIce
+```
+
+    ## # A tibble: 14,741 × 2
+    ##    Date       Extent
+    ##    <date>      <dbl>
+    ##  1 NA           NA  
+    ##  2 1978-10-26   10.2
+    ##  3 1978-10-28   10.4
+    ##  4 1978-10-30   10.6
+    ##  5 1978-11-01   10.7
+    ##  6 1978-11-03   10.8
+    ##  7 1978-11-05   11.0
+    ##  8 1978-11-07   11.1
+    ##  9 1978-11-09   11.2
+    ## 10 1978-11-11   11.3
+    ## # ℹ 14,731 more rows
+
 ## Question 3:
 
 Plot the data and describe the trends you observe.
+
+As shown in the plot, we observe a constant, gradually declining trend
+of Sea Ice through time, from 1980 to 2020. There is also significant
+seasonal fluctuations of Sea Ice each year. Overall, it’s clear that
+more and more Sea Ice are disappearing.
+
+``` r
+ggplot(ArcticIce,aes(x= Date)) + 
+  geom_line(aes(y = Extent, colour = 'Sea Ice' )) + 
+  #geom_line(aes(y = Smoothed_60_days, colour = 'Smoothed_60')) +
+  ggtitle(' Sea Ice Index ') +
+  labs(y = "Sea Ice (10^6 sq km)", color = NULL) +
+  geom_smooth(aes(y = Extent, colour = 'trend'), method=lm)
+```
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+    ## Warning: Removed 1 rows containing non-finite values (`stat_smooth()`).
+
+    ## Warning: Removed 1 row containing missing values (`geom_line()`).
+
+![](climate_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 # Exercise V: Longer term trends in CO2 Records
 
@@ -416,8 +519,8 @@ Vostok Core, back to 400,000 yrs before present day
 
 - Describe the data set: what are the columns and units? Where do the
   numbers come from?
-- What is the uncertainty in measurment? Resolution of the data?
-  Interpretation of missing values?
+- What is the in measurment? Resolution of the data? Interpretation of
+  missing values?
 - Read in and prepare data for analysis.
 - Reverse the ordering to create a chronological record.  
 - Plot data
