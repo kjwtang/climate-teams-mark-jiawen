@@ -255,6 +255,17 @@ Vostok Core, back to 400,000 yrs before present day
 
 -   Description of data set: <http://cdiac.esd.ornl.gov/trends/co2/vostok.html>
 -   Data source: <http://cdiac.ornl.gov/ftp/trends/co2/vostok.icecore.co2>
+```{r}
+library(readxl)
+url <- "https://d32ogoqmya1dw8.cloudfront.net/files/NAGTWorkshops/environmental/workshop12/vostok_ice_core_data.xls"
+destfile <- "vostok_ice_core_data.xls"
+curl::curl_download(url, destfile)
+sheet_index <- 2
+Icecore_co2 <- read_excel(destfile, sheet = sheet_index)
+Icecore_co2
+```
+
+
 
 ## Questions / Tasks:
 

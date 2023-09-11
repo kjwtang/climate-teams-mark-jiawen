@@ -515,6 +515,31 @@ Vostok Core, back to 400,000 yrs before present day
   <http://cdiac.esd.ornl.gov/trends/co2/vostok.html>
 - Data source: <http://cdiac.ornl.gov/ftp/trends/co2/vostok.icecore.co2>
 
+``` r
+library(readxl)
+url <- "https://d32ogoqmya1dw8.cloudfront.net/files/NAGTWorkshops/environmental/workshop12/vostok_ice_core_data.xls"
+destfile <- "vostok_ice_core_data.xls"
+curl::curl_download(url, destfile)
+sheet_index <- 2
+Icecore_co2 <- read_excel(destfile, sheet = sheet_index)
+Icecore_co2
+```
+
+    ## # A tibble: 253 × 3
+    ##    `age (yrs bp)`   co2 resolution
+    ##             <dbl> <dbl>      <dbl>
+    ##  1              0  386          NA
+    ##  2           2342  285.       2342
+    ##  3           3634  273.       1292
+    ##  4           6220  262.       2586
+    ##  5           7327  255.       1107
+    ##  6           8113  260.        786
+    ##  7          10123  262.       2010
+    ##  8          11013  264.        890
+    ##  9          11719  238.        706
+    ## 10          13405  236.       1686
+    ## # ℹ 243 more rows
+
 ## Questions / Tasks:
 
 - Describe the data set: what are the columns and units? Where do the
