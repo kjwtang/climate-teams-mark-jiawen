@@ -206,7 +206,7 @@ The trend of sea level rise is very clear, and the seasonal and meteorological e
 
 -   Describe the data set: what are the columns and units?
 
-There are 6 columns in the original file. Three of them are the time (in year, month, and day of each recording. One column represents the quantity (extent) of sea ice in 10^6 sq km. The other 2 columns indicates missing data and source of data. We expurgated the data and left only 2 columns: the time of recording and the extent of sea ice at that tiume.
+There are 6 columns in the original file. Three of them are the time (in year, month, and day of each recording. One column represents the quantity (extent) of sea ice in 10\^6 sq km. The other 2 columns indicates missing data and source of data. We expurgated the data and left only 2 columns: the time of recording and the extent of sea ice at that tiume.
 
 -   Where do these data come from?
 
@@ -255,26 +255,60 @@ Vostok Core, back to 400,000 yrs before present day
 
 -   Description of data set: <http://cdiac.esd.ornl.gov/trends/co2/vostok.html>
 -   Data source: <http://cdiac.ornl.gov/ftp/trends/co2/vostok.icecore.co2>
+
 ```{r}
 library(readxl)
 url <- "https://d32ogoqmya1dw8.cloudfront.net/files/NAGTWorkshops/environmental/workshop12/vostok_ice_core_data.xls"
 destfile <- "vostok_ice_core_data.xls"
 curl::curl_download(url, destfile)
 sheet_index <- 2
-Icecore_co2 <- read_excel(destfile, sheet = sheet_index)
+Icecore_co2 <- read_excel(destfile, sheet = sheet_index,
+                          col_names = c("time","co2","resolution"),
+                          skip = 1)
 Icecore_co2
+
 ```
-
-
 
 ## Questions / Tasks:
 
 -   Describe the data set: what are the columns and units? Where do the numbers come from?
--   What is the in measurment? Resolution of the data? Interpretation of missing values?
+
+The data set we found contains three columns: time (representing years before present) ,co2 concentration, and resolution of the data. For instance, the time 0 mean present, and time 2342 means 2342 years before now.
+
+-   What is the uncertainty in measurment? Resolution of the data? Interpretation of missing values?
+
+Uncertainty may arise from tiny inaccuracy when interpolating co2 level long time ago. The resolution of the data varies from hundreds to thousands, usually aroune 1000-2000 years.There is no missing value in this data set.
+
 -   Read in and prepare data for analysis.
--   Reverse the ordering to create a chronological record.\
+
+```{r}
+climate <-ggplot(Icecore_co2,aes(x=time)) + 
+  geom_line(aes(y=co2))
+climate
+```
+
+-   Reverse the ordering to create a chronological record.
+
+```{r}
+library(dplyr)
+Icecore_co2$time <- 414085-Icecore_co2$time
+Icecore_co2
+```
+
 -   Plot data
+
+```{r}
+Icecore_co2
+ggplot(Icecore_co2,aes(x=time))+
+  geom_line(aes(y=co2))+
+  labs(x = "years from 414085 years BP", title = "Past 400000 years trends in CO2 Records")
+
+```
+
 -   Consider various smoothing windowed averages of the data.
--   Join this series to Mauna Loa data
+
+-   Join this series to  Loa data
+
 -   Plot joined data
+
 -   Describe your conclusions

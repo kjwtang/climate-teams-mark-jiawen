@@ -458,7 +458,7 @@ ArcticIce <- ArcticIce [ ,c('Date', 'Extent') ]
 ArcticIce
 ```
 
-    ## # A tibble: 14,741 × 2
+    ## # A tibble: 14,742 × 2
     ##    Date       Extent
     ##    <date>      <dbl>
     ##  1 NA           NA  
@@ -471,7 +471,7 @@ ArcticIce
     ##  8 1978-11-07   11.1
     ##  9 1978-11-09   11.2
     ## 10 1978-11-11   11.3
-    ## # ℹ 14,731 more rows
+    ## # ℹ 14,732 more rows
 
 ## Question 3:
 
@@ -521,35 +521,111 @@ url <- "https://d32ogoqmya1dw8.cloudfront.net/files/NAGTWorkshops/environmental/
 destfile <- "vostok_ice_core_data.xls"
 curl::curl_download(url, destfile)
 sheet_index <- 2
-Icecore_co2 <- read_excel(destfile, sheet = sheet_index)
+Icecore_co2 <- read_excel(destfile, sheet = sheet_index,
+                          col_names = c("time","co2","resolution"),
+                          skip = 1)
 Icecore_co2
 ```
 
     ## # A tibble: 253 × 3
-    ##    `age (yrs bp)`   co2 resolution
-    ##             <dbl> <dbl>      <dbl>
-    ##  1              0  386          NA
-    ##  2           2342  285.       2342
-    ##  3           3634  273.       1292
-    ##  4           6220  262.       2586
-    ##  5           7327  255.       1107
-    ##  6           8113  260.        786
-    ##  7          10123  262.       2010
-    ##  8          11013  264.        890
-    ##  9          11719  238.        706
-    ## 10          13405  236.       1686
+    ##     time   co2 resolution
+    ##    <dbl> <dbl>      <dbl>
+    ##  1     0  386          NA
+    ##  2  2342  285.       2342
+    ##  3  3634  273.       1292
+    ##  4  6220  262.       2586
+    ##  5  7327  255.       1107
+    ##  6  8113  260.        786
+    ##  7 10123  262.       2010
+    ##  8 11013  264.        890
+    ##  9 11719  238.        706
+    ## 10 13405  236.       1686
     ## # ℹ 243 more rows
 
 ## Questions / Tasks:
 
 - Describe the data set: what are the columns and units? Where do the
   numbers come from?
-- What is the in measurment? Resolution of the data? Interpretation of
-  missing values?
+
+The data set we found contains three columns: time (representing years
+before present) ,co2 concentration, and resolution of the data. For
+instance, the time 0 mean present, and time 2342 means 2342 years before
+now.
+
+- What is the uncertainty in measurment? Resolution of the data?
+  Interpretation of missing values?
+
+Uncertainty may arise from tiny inaccuracy when interpolating co2 level
+long time ago. The resolution of the data varies from hundreds to
+thousands, usually aroune 1000-2000 years.There is no missing value in
+this data set.
+
 - Read in and prepare data for analysis.
-- Reverse the ordering to create a chronological record.  
+
+``` r
+climate <-ggplot(Icecore_co2,aes(x=time)) + 
+  geom_line(aes(y=co2))
+climate
+```
+
+![](climate_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+
+- Reverse the ordering to create a chronological record.
+
+``` r
+library(dplyr)
+Icecore_co2$time <- 414085-Icecore_co2$time
+Icecore_co2
+```
+
+    ## # A tibble: 253 × 3
+    ##      time   co2 resolution
+    ##     <dbl> <dbl>      <dbl>
+    ##  1 414085  386          NA
+    ##  2 411743  285.       2342
+    ##  3 410451  273.       1292
+    ##  4 407865  262.       2586
+    ##  5 406758  255.       1107
+    ##  6 405972  260.        786
+    ##  7 403962  262.       2010
+    ##  8 403072  264.        890
+    ##  9 402366  238.        706
+    ## 10 400680  236.       1686
+    ## # ℹ 243 more rows
+
 - Plot data
+
+``` r
+Icecore_co2
+```
+
+    ## # A tibble: 253 × 3
+    ##      time   co2 resolution
+    ##     <dbl> <dbl>      <dbl>
+    ##  1 414085  386          NA
+    ##  2 411743  285.       2342
+    ##  3 410451  273.       1292
+    ##  4 407865  262.       2586
+    ##  5 406758  255.       1107
+    ##  6 405972  260.        786
+    ##  7 403962  262.       2010
+    ##  8 403072  264.        890
+    ##  9 402366  238.        706
+    ## 10 400680  236.       1686
+    ## # ℹ 243 more rows
+
+``` r
+ggplot(Icecore_co2,aes(x=time))+
+  geom_line(aes(y=co2))+
+  labs(x = "years from 414085 years BP", title = "Past 400000 years trends in CO2 Records")
+```
+
+![](climate_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
 - Consider various smoothing windowed averages of the data.
-- Join this series to Mauna Loa data
+
+- Join this series to Loa data
+
 - Plot joined data
+
 - Describe your conclusions
