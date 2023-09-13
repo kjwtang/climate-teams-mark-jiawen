@@ -694,11 +694,12 @@ ggplot(full_co2,aes(x=time))+
 
 ![](climate_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
-- Describe your conclusions Based on the Ice core co2 data, we show
-  constant, moderate natural variations in co2 level since 400000 years
-  ago, and the range is around 175 to 300 ppm. However, since Industrial
-  revolution which happened “recently” in the long earth history, co2
-  level rises at an unprecedently considerable rate, as manifested by
-  the almost vertical straight line.This recent surge in co2 is thus
-  unlikely caused solely by nature: human activities have played a great
-  role.
+- Describe your conclusions
+
+Based on the Ice core co2 data, we show constant, moderate natural
+variations in co2 level since 400000 years ago, and the range is around
+175 to 300 ppm. However, since Industrial revolution which happened
+“recently” in the long earth history, co2 level rises at an
+unprecedently considerable rate, as manifested by the almost vertical
+straight line.This recent surge in co2 is thus unlikely caused solely by
+nature: human activities have played a great role.
