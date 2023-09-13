@@ -458,7 +458,7 @@ ArcticIce <- ArcticIce [ ,c('Date', 'Extent') ]
 ArcticIce
 ```
 
-    ## # A tibble: 14,742 × 2
+    ## # A tibble: 14,743 × 2
     ##    Date       Extent
     ##    <date>      <dbl>
     ##  1 NA           NA  
@@ -471,7 +471,7 @@ ArcticIce
     ##  8 1978-11-07   11.1
     ##  9 1978-11-09   11.2
     ## 10 1978-11-11   11.3
-    ## # ℹ 14,732 more rows
+    ## # ℹ 14,733 more rows
 
 ## Question 3:
 
@@ -617,7 +617,8 @@ Icecore_co2
 ``` r
 ggplot(Icecore_co2,aes(x=time))+
   geom_line(aes(y=co2))+
-  labs(x = "years from 414085 years BP", title = "Past 400000 years trends in CO2 Records")
+  labs(x = "years from 414085 years BP", title = "Past 400000 years trends in CO2 Records") +
+  theme(axis.text.x = element_blank())
 ```
 
 ![](climate_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
