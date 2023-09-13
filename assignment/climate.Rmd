@@ -305,6 +305,7 @@ climate
 ```{r}
 library(dplyr)
 Icecore_co2$time <- 414085-Icecore_co2$time
+Icecore_co2 <- Icecore_co2[ ,c('time', 'co2')]
 Icecore_co2
 ```
 
@@ -319,10 +320,31 @@ ggplot(Icecore_co2,aes(x=time))+
   
 ```
 
--   Consider various smoothing windowed averages of the data.
-
 -   Join this series to Loa data
 
+```{r}
+co2_2009 <- co2[ ,c('decimal_date', 'interpolated')]
+co2_2009 <- co2_2009[co2_2009$decimal_date>2009,]
+co2_2009$decimal_date <- co2_2009$decimal_date+414085-2009
+colnames(co2_2009) <- c("time", "co2")
+co2_2009
+
+
+full_co2<-rbind(Icecore_co2,co2_2009)
+full_co2<-full_co2 %>% arrange((time))
+# Reorder the table by the "Score" column in decreasing order
+full_co2
+
+```
 -   Plot joined data
 
+```{r}
+#Icecore_co2
+ggplot(full_co2,aes(x=time))+
+  geom_line(aes(y = co2))+
+  labs(x = "years from 414099 years BP to present", title = "Past 400000 years trends in CO2 Records") +
+  theme(axis.text.x = element_blank())
+```
+
 -   Describe your conclusions
+Based on the Ice core co2 data, we show constant, moderate natural variations in co2 level since 400000 years ago, and the range is around 175 to 300 ppm. However, since Industrial revolution which happened "recently" in the long earth history, co2 level rises at an unprecedently considerable rate, as manifested by the almost vertical straight line.This recent surge in co2 is thus unlikely caused solely by nature: human activities have played a great role.

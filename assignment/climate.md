@@ -586,22 +586,23 @@ climate
 ``` r
 library(dplyr)
 Icecore_co2$time <- 414085-Icecore_co2$time
+Icecore_co2 <- Icecore_co2[ ,c('time', 'co2')]
 Icecore_co2
 ```
 
-    ## # A tibble: 253 × 3
-    ##      time   co2 resolution
-    ##     <dbl> <dbl>      <dbl>
-    ##  1 414085  386          NA
-    ##  2 411743  285.       2342
-    ##  3 410451  273.       1292
-    ##  4 407865  262.       2586
-    ##  5 406758  255.       1107
-    ##  6 405972  260.        786
-    ##  7 403962  262.       2010
-    ##  8 403072  264.        890
-    ##  9 402366  238.        706
-    ## 10 400680  236.       1686
+    ## # A tibble: 253 × 2
+    ##      time   co2
+    ##     <dbl> <dbl>
+    ##  1 414085  386 
+    ##  2 411743  285.
+    ##  3 410451  273.
+    ##  4 407865  262.
+    ##  5 406758  255.
+    ##  6 405972  260.
+    ##  7 403962  262.
+    ##  8 403072  264.
+    ##  9 402366  238.
+    ## 10 400680  236.
     ## # ℹ 243 more rows
 
 - Plot data
@@ -610,19 +611,19 @@ Icecore_co2
 Icecore_co2
 ```
 
-    ## # A tibble: 253 × 3
-    ##      time   co2 resolution
-    ##     <dbl> <dbl>      <dbl>
-    ##  1 414085  386          NA
-    ##  2 411743  285.       2342
-    ##  3 410451  273.       1292
-    ##  4 407865  262.       2586
-    ##  5 406758  255.       1107
-    ##  6 405972  260.        786
-    ##  7 403962  262.       2010
-    ##  8 403072  264.        890
-    ##  9 402366  238.        706
-    ## 10 400680  236.       1686
+    ## # A tibble: 253 × 2
+    ##      time   co2
+    ##     <dbl> <dbl>
+    ##  1 414085  386 
+    ##  2 411743  285.
+    ##  3 410451  273.
+    ##  4 407865  262.
+    ##  5 406758  255.
+    ##  6 405972  260.
+    ##  7 403962  262.
+    ##  8 403072  264.
+    ##  9 402366  238.
+    ## 10 400680  236.
     ## # ℹ 243 more rows
 
 ``` r
@@ -634,10 +635,70 @@ ggplot(Icecore_co2,aes(x=time))+
 
 ![](climate_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
-- Consider various smoothing windowed averages of the data.
-
 - Join this series to Loa data
+
+``` r
+co2_2009 <- co2[ ,c('decimal_date', 'interpolated')]
+co2_2009 <- co2_2009[co2_2009$decimal_date>2009,]
+co2_2009$decimal_date <- co2_2009$decimal_date+414085-2009
+colnames(co2_2009) <- c("time", "co2")
+co2_2009
+```
+
+    ## # A tibble: 176 × 2
+    ##       time   co2
+    ##      <dbl> <dbl>
+    ##  1 414085.  387.
+    ##  2 414085.  387.
+    ##  3 414085.  388.
+    ##  4 414085.  387.
+    ##  5 414085.  387.
+    ##  6 414085.  387.
+    ##  7 414086.  388.
+    ##  8 414086.  388.
+    ##  9 414086.  388.
+    ## 10 414086.  388.
+    ## # ℹ 166 more rows
+
+``` r
+full_co2<-rbind(Icecore_co2,co2_2009)
+full_co2<-full_co2 %>% arrange((time))
+# Reorder the table by the "Score" column in decreasing order
+full_co2
+```
+
+    ## # A tibble: 429 × 2
+    ##     time   co2
+    ##    <dbl> <dbl>
+    ##  1     0  286.
+    ##  2  3254  276.
+    ##  3  5063  284.
+    ##  4  8241  280.
+    ##  5 13695  278 
+    ##  6 17372  275.
+    ##  7 19457  266.
+    ##  8 21634  250.
+    ##  9 23496  255.
+    ## 10 27506  259.
+    ## # ℹ 419 more rows
 
 - Plot joined data
 
-- Describe your conclusions
+``` r
+#Icecore_co2
+ggplot(full_co2,aes(x=time))+
+  geom_line(aes(y = co2))+
+  labs(x = "years from 414099 years BP to present", title = "Past 400000 years trends in CO2 Records") +
+  theme(axis.text.x = element_blank())
+```
+
+![](climate_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+
+- Describe your conclusions Based on the Ice core co2 data, we show
+  constant, moderate natural variations in co2 level since 400000 years
+  ago, and the range is around 175 to 300 ppm. However, since Industrial
+  revolution which happened “recently” in the long earth history, co2
+  level rises at an unprecedently considerable rate, as manifested by
+  the almost vertical straight line.This recent surge in co2 is thus
+  unlikely caused solely by nature: human activities have played a great
+  role.
