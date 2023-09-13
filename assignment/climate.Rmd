@@ -300,8 +300,8 @@ Icecore_co2
 ```{r}
 Icecore_co2
 ggplot(Icecore_co2,aes(x=time))+
-  geom_line(aes(y=co2))+
-  labs(x = "years from 414085 years BP", title = "Past 400000 years trends in CO2 Records") +
+  geom_line(aes(y= co2))+
+  labs(x = "years from 414085 years BP to present", title = "Past 400000 years trends in CO2 Records") +
   theme(axis.text.x = element_blank())
   
 ```
