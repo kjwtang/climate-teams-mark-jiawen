@@ -10,9 +10,21 @@ Carl Boettiger & Dana Seidel & Xiangrong (Mark) Sun & Jiawen Tang
 - Raw data from
   <https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt>
 
+The dataset is an observation from Hawaii, Mauna Loa. We will go to see
+the “Keeling Curve” by this dataset. CO2 is in an increasing trend with
+increasing speed, relative to 1% of concentration in the atmosphere.
+This will be one of the clear trends that human is causing Climate
+Change and a great start to know about climate change. In this website
+we will use five indexes to present climate change exists.
+
+Run the tidyverse function so we can use the tidy table in the following
+codes.
+
 ``` r
 library(tidyverse)
 ```
+
+## Dataset visualization using R:
 
 ``` r
 co2 <- 
@@ -39,10 +51,12 @@ co2
     ## 10  1958    12        1959.            315.         315.    NA    NA    NA
     ## # ℹ 776 more rows
 
+## Data plotting and trend:
+
 ``` r
 ggplot(co2, aes(x = decimal_date)) + 
-  geom_line(aes(y = monthly_average),col="blue")+
-  geom_line(aes(y = interpolated),col="red")+
+  geom_line(aes(y = monthly_average),col = "blue")+
+  geom_line(aes(y = interpolated),col = "red")+
   labs(x = "year", y = "CO₂ (parts per million)")
 ```
 
@@ -76,7 +90,7 @@ be considered in analysis.
 ``` r
 climate <- read_table("http://climate.nasa.gov/system/internal_resources/details/original/647_Global_Temperature_Data_File.txt",
            col_names = c("year", "annual_average", "five_year_average"),
-           na="NA",
+           na = "NA",
            col_types = ('ddd'),
            skip = 5
            )
@@ -98,11 +112,11 @@ climate
     ## 10  1889          -0.1              -0.25
     ## # ℹ 132 more rows
 
-## plotting trend in global mean temperatures over time
+## Plotting trend in global mean temperatures over time
 
-There is a annual variation in the temperature mean, but the trend is
+There is an annual variation in the temperature mean, but the trend is
 increasing after 1920 and with a stronger signal after 1960. It
-indicates the temperature is increase compare to average.
+indicates the temperature is increased compared to average.
 
 ``` r
 ggplot(climate, aes(x = year, y = annual_average)) + geom_line()
@@ -137,8 +151,9 @@ global temperature change by performing regression analysis.
 ggplot(climate, aes(x = year, y = five_year_average)) + geom_line()
 ```
 
-![](climate_files/figure-gfm/unnamed-chunk-6-1.png)<!-- --> - 10 &
-20-year averages of data:
+![](climate_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+- 10 & 20-year averages of data:
 
 ``` r
 library(dplyr)
@@ -155,8 +170,9 @@ library(zoo)
 ``` r
 #calculate 10-year & 20-year rolling average
 climate = climate %>%
-  mutate(ten_year_avg = rollmean(climate$annual_average, k=10, fill=NA, align='right'),
-         twenty_year_avg = rollmean(climate$annual_average, k=20, fill=NA, align='right'));
+  mutate(ten_year_avg = rollmean(climate$annual_average, k = 10, fill = NA, align = 'right'),
+         twenty_year_avg = rollmean(climate$annual_average, k = 20, fill = NA, align = 'right'));
+
 climate
 ```
 
@@ -176,7 +192,7 @@ climate
     ## # ℹ 132 more rows
 
 ``` r
-ggplot(climate,aes(x= year)) + 
+ggplot(climate,aes(x = year)) + 
   geom_line(aes(y = ten_year_avg, color = 'ten')) + 
   geom_line(aes(y = twenty_year_avg, color = 'twenty')) +
   labs(y = "Temperature Change (C)", color = NULL) +
@@ -185,10 +201,13 @@ ggplot(climate,aes(x= year)) +
                       limits = c("ten", "twenty"))
 ```
 
-![](climate_files/figure-gfm/unnamed-chunk-8-1.png)<!-- --> \##
-Conclusion: The data looks more flat as the average year increases,
-becoming more pronounced and losing some of the temperature fluctuations
-caused by special events.
+![](climate_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+## Conclusion:
+
+The data looks more flat as the average year increases, becoming more
+pronounced and losing some of the temperature fluctuations caused by
+special events.
 
 # Assessing melting ice sheets over time
 
@@ -212,7 +231,7 @@ measured about 12 times a year.
 ## Dataset visualization using R:
 
 ``` r
-IceMass<-read_csv("http://climate.nasa.gov/system/internal_resources/details/original/499_GRN_ANT_mass_changes.csv",
+IceMass <- read_csv("http://climate.nasa.gov/system/internal_resources/details/original/499_GRN_ANT_mass_changes.csv",
               col_names = c("year","greenland","antarctica"),
               col_types = ('ddd'),
               skip = 10)
@@ -242,7 +261,7 @@ affected by positive feedback more, and the weight of the ice sheet
 dropped faster.
 
 ``` r
-ggplot(IceMass,aes(x= year)) + 
+ggplot(IceMass,aes(x = year)) + 
   geom_line(aes(y = greenland, colour = 'Greenland' )) + 
   geom_line(aes(y = antarctica, colour = 'Antarctica')) +
   ggtitle('Icesheet mass change over time') +
@@ -290,10 +309,10 @@ used.
 ## Dataset visualization using R:
 
 ``` r
-SeaLevel<-read_table("http://climate.nasa.gov/system/internal_resources/details/original/121_Global_Sea_Level_Data_File.txt",
-                     skip=45,
+SeaLevel <- read_table("http://climate.nasa.gov/system/internal_resources/details/original/121_Global_Sea_Level_Data_File.txt",
+                     skip = 45,
                      col_names = c("a","b","year","d","e","f","g","h","GMSL","j","k","Smoothed_60_days"),
-                     na="99900")
+                     na = "99900")
 ```
 
     ## 
@@ -314,7 +333,7 @@ SeaLevel<-read_table("http://climate.nasa.gov/system/internal_resources/details/
     ## )
 
 ``` r
-SeaLevel<- SeaLevel[ ,c('year', 'GMSL', 'Smoothed_60_days')]
+SeaLevel <- SeaLevel[ ,c('year', 'GMSL', 'Smoothed_60_days')]
 SeaLevel
 ```
 
@@ -341,7 +360,7 @@ rough curve. However, it has risen by about 10cm in 30 years, which is
 already a very obvious upward trend.
 
 ``` r
-ggplot(SeaLevel,aes(x= year)) + 
+ggplot(SeaLevel,aes(x = year)) + 
   geom_line(aes(y = GMSL, colour = 'GMSL' )) + 
   geom_line(aes(y = Smoothed_60_days, colour = 'Smoothed_60')) +
   ggtitle('Global Mean Sea Level change over time') +
@@ -350,41 +369,33 @@ ggplot(SeaLevel,aes(x= year)) +
 
 ![](climate_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
-# Exercise IV: Arctic Sea Ice?
+# Observe of Arctic Sea Ice Area.
+
+Data source:
 
 - <http://nsidc.org/data/G02135>
 - <ftp://sidads.colorado.edu/DATASETS/NOAA/G02135/north/daily/data/N_seaice_extent_daily_v3.0.csv>
 
-## Question 1:
-
-- Describe the data set: what are the columns and units?
+## Background information of the Data:
 
 There are 6 columns in the original file. Three of them are the time (in
 year, month, and day of each recording. One column represents the
-quantity (extent) of sea ice in 10^6 sq km. The other 2 columns
-indicates missing data and source of data. We expurgated the data and
-left only 2 columns: the time of recording and the extent of sea ice at
-that tiume.
-
-- Where do these data come from?
+quantity (extent) of sea ice in 10^6 sq km. The other 2 columns indicate
+missing data and the source of data. We expurgated the data and left
+only 2 columns: the time of recording and the extent of sea ice at that
+time.
 
 The data come from NSIDC (National Snow and Ice Data Center)
 
-- What is the uncertainty in measurement? Resolution of the data?
-  Interpretation of missing values?
-
 The uncertainty in measurement may arise from tiny inaccuracy of data
-measurment tools. Besides, the resort to time-series analysis may
-involve small extent of interpolation, so the measurement may not be
-exactly accurate and certain.The resolution of the data is 2 days, as
-each recording time is separated by 2 days.There is no missing values as
-they are all left as 0. In other words, this data sheet is consistent
+measurement tools. Besides, the resort to time-series analysis may
+involve a small extent of interpolation, so the measurement may not be
+exactly accurate and certain. The resolution of the data is 2 days, as
+each recording time is separated by 2 days. There are no missing values
+as they are all left as 0. In other words, this data sheet is consistent
 and complete.
 
-## Question 2:
-
-Construct the necessary R code to import this data set as a tidy `Table`
-object.
+## Dataset visualization using R:
 
 ``` r
 ArcticIce<-read_csv("ftp://sidads.colorado.edu/DATASETS/NOAA/G02135/north/daily/data/N_seaice_extent_daily_v3.0.csv",
@@ -399,12 +410,12 @@ ArcticIce<-read_csv("ftp://sidads.colorado.edu/DATASETS/NOAA/G02135/north/daily/
     ##   problems(dat)
 
 ``` r
-ArcticIce$Date<-as.Date(with(ArcticIce,paste(Year,Month,Day,sep="-")),"%Y-%m-%d")
+ArcticIce$Date <- as.Date(with(ArcticIce,paste(Year,Month,Day,sep="-")),"%Y-%m-%d")
 ArcticIce <- ArcticIce [ ,c('Date', 'Extent') ]
 ArcticIce
 ```
 
-    ## # A tibble: 14,745 × 2
+    ## # A tibble: 14,746 × 2
     ##    Date       Extent
     ##    <date>      <dbl>
     ##  1 NA           NA  
@@ -417,11 +428,9 @@ ArcticIce
     ##  8 1978-11-07   11.1
     ##  9 1978-11-09   11.2
     ## 10 1978-11-11   11.3
-    ## # ℹ 14,735 more rows
+    ## # ℹ 14,736 more rows
 
-## Question 3:
-
-Plot the data and describe the trends you observe.
+## Data plotting and trend:
 
 As shown in the plot, we observe a constant, gradually declining trend
 of Sea Ice through time, from 1980 to 2020. There are also significant
@@ -429,12 +438,12 @@ seasonal fluctuations of Sea Ice each year. Overall, it’s clear that
 more and more Sea Ice is disappearing.
 
 ``` r
-ggplot(ArcticIce,aes(x= Date)) + 
+ggplot(ArcticIce,aes(x = Date)) + 
   geom_line(aes(y = Extent, colour = 'Sea Ice' )) + 
   #geom_line(aes(y = Smoothed_60_days, colour = 'Smoothed_60')) +
-  ggtitle(' Sea Ice Index ') +
+  ggtitle(' Sea Ice Area over Time ') +
   labs(y = "Sea Ice (10^6 sq km)", color = NULL) +
-  geom_smooth(aes(y = Extent, colour = 'trend'), method=lm)
+  geom_smooth(aes(y = Extent, colour = 'trend'), method = lm)
 ```
 
     ## `geom_smooth()` using formula = 'y ~ x'
@@ -445,15 +454,13 @@ ggplot(ArcticIce,aes(x= Date)) +
 
 ![](climate_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
-# Exercise V: Longer term trends in CO2 Records
+# Longer term trends in CO2 Records from Ice Core
 
 The data we analyzed in the unit introduction included CO2 records
 dating back only as far as the measurements at the Manua Loa
 observatory. To put these values into geological perspective requires
-looking back much farther than humans have been monitoring atmosopheric
+looking back much further than humans have been monitoring atmospheric
 CO2 levels. To do this, we need another approach.
-
-[Ice core data](http://cdiac.ornl.gov/trends/co2/ice_core_co2.html):
 
 Vostok Core, back to 400,000 yrs before present day
 
@@ -461,6 +468,16 @@ Vostok Core, back to 400,000 yrs before present day
   <https://www.antarcticglaciers.org/glaciers-and-climate/ice-cores/ice-core-basics/#:~:text=420%2C000%20years%20of%20ice%20core%20data%20from%20Vostok%2C%20Antarctica%20research%20station.>
 - Data source:
   <https://d32ogoqmya1dw8.cloudfront.net/files/NAGTWorkshops/environmental/workshop12/vostok_ice_core_data.xls>
+
+The data set we found contains three columns: time (representing years
+before present) ,co2 concentration, and resolution of the data. For
+instance, the time 0 mean present, and time 2342 means 2342 years before
+now. Uncertainty may arise from tiny inaccuracy when interpolating co2
+level long time ago. The resolution of the data varies from hundreds to
+thousands, usually aroune 1000-2000 years.There is no missing value in
+this data set.
+
+## Dataset visualization using R:
 
 ``` r
 library(readxl)
@@ -489,35 +506,17 @@ Icecore_co2
     ## 10 13405  236.       1686
     ## # ℹ 243 more rows
 
-## Questions / Tasks:
-
-- Describe the data set: what are the columns and units? Where do the
-  numbers come from?
-
-The data set we found contains three columns: time (representing years
-before present) ,co2 concentration, and resolution of the data. For
-instance, the time 0 mean present, and time 2342 means 2342 years before
-now.
-
-- What is the uncertainty in measurment? Resolution of the data?
-  Interpretation of missing values?
-
-Uncertainty may arise from tiny inaccuracy when interpolating co2 level
-long time ago. The resolution of the data varies from hundreds to
-thousands, usually aroune 1000-2000 years.There is no missing value in
-this data set.
-
-- Read in and prepare data for analysis.
+Plot the original data:
 
 ``` r
-climate <-ggplot(Icecore_co2,aes(x=time)) + 
-  geom_line(aes(y=co2))
+climate <- ggplot(Icecore_co2,aes(x = time)) + 
+  geom_line(aes(y = co2))
 climate
 ```
 
 ![](climate_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
-- Reverse the ordering to create a chronological record.
+Reverse the ordering to create a chronological record.
 
 ``` r
 library(dplyr)
@@ -541,7 +540,7 @@ Icecore_co2
     ## 10 400680  236.
     ## # ℹ 243 more rows
 
-- Plot data
+Plot the new data:
 
 ``` r
 Icecore_co2
@@ -563,7 +562,7 @@ Icecore_co2
     ## # ℹ 243 more rows
 
 ``` r
-ggplot(Icecore_co2,aes(x=time))+
+ggplot(Icecore_co2,aes(x = time))+
   geom_line(aes(y= co2))+
   labs(x = "years from 414085 years BP to present", title = "Past 400000 years trends in CO2 Records") +
   theme(axis.text.x = element_blank())
@@ -571,7 +570,7 @@ ggplot(Icecore_co2,aes(x=time))+
 
 ![](climate_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
-- Join this series to Loa data
+Join this series to LOA (Hawaii data from 2009).
 
 ``` r
 co2_2009 <- co2[ ,c('decimal_date', 'interpolated')]
@@ -597,8 +596,8 @@ co2_2009
     ## # ℹ 166 more rows
 
 ``` r
-full_co2<-rbind(Icecore_co2,co2_2009)
-full_co2<-full_co2 %>% arrange((time))
+full_co2 <- rbind(Icecore_co2,co2_2009)
+full_co2 <- full_co2 %>% arrange((time))
 # Reorder the table by the "Score" column in decreasing order
 full_co2
 ```
@@ -618,11 +617,11 @@ full_co2
     ## 10 27506  259.
     ## # ℹ 419 more rows
 
-- Plot joined data
+Plot joined data(full-time scale form 400000 b.p. till 2021)
 
 ``` r
 #Icecore_co2
-ggplot(full_co2,aes(x=time))+
+ggplot(full_co2,aes(x = time))+
   geom_line(aes(y = co2))+
   labs(x = "years from 414099 years BP to present", title = "Past 400000 years trends in CO2 Records") +
   theme(axis.text.x = element_blank())
@@ -630,12 +629,17 @@ ggplot(full_co2,aes(x=time))+
 
 ![](climate_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
-- Describe your conclusions
+## Conclusion
 
-Based on the Ice core co2 data, we show constant, moderate natural
-variations in co2 level since 400000 years ago, and the range is around
-175 to 300 ppm. However, since Industrial revolution which happened
-“recently” in the long earth history, co2 level rises at an
+Based on the Ice core CO2 data, we show constant, moderate natural
+variations in CO2 level since 400000 years ago, and the range is around
+175 to 300 ppm. However, since the Industrial Revolution which happened
+“recently” in the long Earth’s history, CO2 level has risen at an
 unprecedently considerable rate, as manifested by the almost vertical
-straight line.This recent surge in co2 is thus unlikely caused solely by
-nature: human activities have played a great role.
+straight line. This recent surge in CO2 is thus unlikely caused solely
+by nature: human activities have played a great role.
+
+All of the above data (CO2, temperature, sea level, glacier volume, ice
+sheet area) prove that climate change is happening. We should try our
+best to prevent the deterioration of these conditions in order to
+protect the fragile ecosystems on which we depend.
