@@ -1,10 +1,10 @@
 Mark and Jiawen Climate Project
 ================
-Carl Boettiger & Dana Seidel & Mark Sun & Jiawen Tang
+Carl Boettiger & Dana Seidel & Xiangrong (Mark) Sun & Jiawen Tang
 
-# Unit I: Climate Change Module
+# Climate Change
 
-## Warm-up exercise: Examining CO2 trends in R
+## Historical changes in global carbon dioxide over time using R
 
 - Example from <http://climate.nasa.gov/vital-signs/carbon-dioxide/>
 - Raw data from
@@ -17,7 +17,7 @@ library(tidyverse)
 ``` r
 co2 <- 
 read_table("https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt", 
-                  comment="#",
+                  comment ="#",
                   col_names = c("year", "month", "decimal_date", "monthly_average",
                                 "interpolated", "days","std", ""),
                   na = c("-1", "-9.99","-0.99"))
@@ -41,37 +41,23 @@ co2
 
 ``` r
 ggplot(co2, aes(x = decimal_date)) + 
-  geom_line(aes(y=monthly_average),col="blue")+
-  geom_line(aes(y=interpolated),col="red")
+  geom_line(aes(y = monthly_average),col="blue")+
+  geom_line(aes(y = interpolated),col="red")+
+  labs(x = "year", y = "CO₂ (parts per million)")
 ```
 
 ![](climate_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
-Which months are the CO2 values at the maximum? Minimum? Why is this?
-May is the maximum and October is the minimum; since 90% of the FF
-emission in northern hemisphere and photosynthesis will help reduce.
-What rolling average is used in computing the “trend” line? How does the
-trend depend on the rolling average?
-
 ------------------------------------------------------------------------
 
-# Exercise I: Temperature Data
+# Change in global surface temperatures over time
 
 Each of the last years has consecutively set new records on global
-climate. In this section we will analyze global mean temperature data.
+climate. We will analyze global mean temperature data using R.
 
 Data from: <http://climate.nasa.gov/vital-signs/global-temperature>
 
-## Question 1:
-
-Describe the data set to the best of your ability given the
-documentation provided. Describe what kind of column each data contains
-and what units it is measured in. Then address our three key questions
-in understanding this data:
-
-- How are the measurements made? What is the associated measurement ?
-- What is the resolution of the data?
-- Are their missing values? How should they be handled?
+## Background information of the data
 
 The data source is NASA/GISS. While the article doesn’t articulate how
 the measurements are made,it is likely they study ice cores to construct
@@ -83,10 +69,8 @@ to each year’s annual mean temp. The data set is complete (no missing
 values), if there are, they may be represented with “NA” and wiill not
 be considered in analysis.
 
-## Question 2:
+## Dataset visualization using R:
 
-Construct the necessary R code to import and prepare for manipulation
-the following data set:
 <http://climate.nasa.gov/system/internal_resources/details/original/647_Global_Temperature_Data_File.txt>
 
 ``` r
@@ -114,10 +98,11 @@ climate
     ## 10  1889          -0.1              -0.25
     ## # ℹ 132 more rows
 
-## Question 3:
+## plotting trend in global mean temperatures over time
 
-Plot the trend in global mean temperatures over time. Describe what you
-see in the plot and how you interpret the patterns you observe.
+There is a annual variation in the temperature mean, but the trend is
+increasing after 1920 and with a stronger signal after 1960. It
+indicates the temperature is increase compare to average.
 
 ``` r
 ggplot(climate, aes(x = year, y = annual_average)) + geom_line()
@@ -125,58 +110,37 @@ ggplot(climate, aes(x = year, y = annual_average)) + geom_line()
 
 ![](climate_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
-There is a annual variation in the temperature mean, but the trend is
-increasing after 1920 and with a stronger signal after 1960. It
-indicates the temperature is increase compare to average.
+## Evaluating the evidence for a “Pause” in warming
 
-## Question 4: Evaluating the evidence for a “Pause” in warming?
+The \[2013 IPCC Report\] included a tentative observation of a “much
+smaller increasing trend” in global mean temperatures since 1998 than
+was observed previously. This led to much discussion in the media about
+the existence of a “Pause” or “Hiatus” in global warming rates, as well
+as much research looking into where the extra heat could have gone.
 
-The [2013 IPCC
-Report](https://www.ipcc.ch/pdf/assessment-report/ar5/wg1/WG1AR5_SummaryVolume_FINAL.pdf)
-included a tentative observation of a “much smaller increasing trend” in
-global mean temperatures since 1998 than was observed previously. This
-led to much discussion in the media about the existence of a “Pause” or
-“Hiatus” in global warming rates, as well as much research looking into
-where the extra heat could have gone. (Examples discussing this question
-include articles in [The
-Guardian](http://www.theguardian.com/environment/2015/jun/04/global-warming-hasnt-paused-study-finds),
-[BBC News](http://www.bbc.com/news/science-environment-28870988), and
-[Wikipedia](https://en.wikipedia.org/wiki/Global_warming_hiatus)).
-
-By examining the data here, what evidence do you find or not find for
-such a pause? Present an analysis of this data (using the tools &
-methods we have covered in Foundation course so far) to argue your
-case.  
-What additional analyses or data sources would better help you refine
-your arguments?
-
-By looking at the data, I did not find evidence in support of such a
+By looking at the data, we did not find evidence in support of such a
 hiatus around 1998. The graph above showing global mean temperatures
 over time depicts a rather consistent, steady raise in global mean
 temperature since 1998.There is not a pause or decrease in the trend.
 Some additional analysis that may help could be determining the rate of
 global temperature change by performing regression analysis.
 
-## Question 5: Rolling averages
+## Rolling averages of global temperature
 
-- What is the meaning of “5 year average” vs “annual average”? 5 year
-  average is the rolling average that smooth the annual variation signal
-  in the data, and compare to annual average, it shows a more smooth
-  trend of increase in temperature.
-- Construct 5 year averages from the annual data. Construct 10 & 20-year
-  averages.
-- Plot the different averages and describe what differences you see and
-  why.
+- 5 year average is the rolling average that smooth the annual variation
+  signal in the data, and compare to annual average, it shows a more
+  smooth trend of increase in temperature.
+
+- 5 year averages from the annual data:
 
 ``` r
-ggplot(climate,aes(x= year, y = five_year_average)) + geom_line()
+ggplot(climate, aes(x = year, y = five_year_average)) + geom_line()
 ```
 
-![](climate_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](climate_files/figure-gfm/unnamed-chunk-6-1.png)<!-- --> - 10 &
+20-year averages of data:
 
 ``` r
-#ggplot(co2, aes(x = decimal_date, y = monthly_average)) + geom_line() 
-
 library(dplyr)
 library(zoo)
 ```
@@ -221,45 +185,31 @@ ggplot(climate,aes(x= year)) +
                       limits = c("ten", "twenty"))
 ```
 
-    ## Warning: Removed 9 rows containing missing values (`geom_line()`).
+![](climate_files/figure-gfm/unnamed-chunk-8-1.png)<!-- --> \##
+Conclusion: The data looks more flat as the average year increases,
+becoming more pronounced and losing some of the temperature fluctuations
+caused by special events.
 
-    ## Warning: Removed 19 rows containing missing values (`geom_line()`).
-
-![](climate_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
-
-The data looks more flat as the average year increases, becoming more
-pronounced and losing some of the temperature fluctuations caused by
-special events.
-
-# Exercise II: Melting Ice Sheets?
+# Assessing melting ice sheets over time
 
 - Data description: <http://climate.nasa.gov/vital-signs/land-ice/>
 - Raw data file:
   <http://climate.nasa.gov/system/internal_resources/details/original/499_GRN_ANT_mass_changes.csv>
 
-## Question 1:
+## Background information of the data
 
-- Describe the data set: what are the columns and units? Where do the
-  numbers come from?
+The columns are time in decimal years, Greenland and Antarctica ice
+sheet mass in Giga tonnes. The data are collected by NASA GRACE and
+GRACE Follow-On satellites, which are gravitational satellites that
+measure land change by change of gravitational force.
 
-  The columns are time in decimal years, Greenland and Antarctica ice
-  sheet mass in Giga tonnes. The data are collected by NASA GRACE and
-  GRACE Follow-On satellites, which are gravitational satellites that
-  measure land change by change of gravitational force.
+The GRACE mission ended in June 2017. The GRACE Follow-On mission began
+collecting data in June 2018, with some lost data in the middle. The
+record includes new data processing methods and is constantly updated as
+more data comes in, with a delay of up to two months. Ice sheet data are
+measured about 12 times a year.
 
-- What is the measurement? Resolution of the data? Interpretation of
-  missing values?
-
-  The GRACE mission ended in June 2017. The GRACE Follow-On mission
-  began collecting data in June 2018, with some lost data in the middle.
-  The record includes new data processing methods and is constantly
-  updated as more data comes in, with a delay of up to two months. Ice
-  sheet data are measured about 12 times a year.
-
-## Question 2:
-
-Construct the necessary R code to import this data set as a tidy `Table`
-object.
+## Dataset visualization using R:
 
 ``` r
 IceMass<-read_csv("http://climate.nasa.gov/system/internal_resources/details/original/499_GRN_ANT_mass_changes.csv",
@@ -284,9 +234,12 @@ IceMass
     ## 10 2003.     1427.       494.
     ## # ℹ 130 more rows
 
-## Question 3:
+## Data plotting and trend:
 
-Plot the data and describe the trends you observe.
+Both ice sheets showed a clear declining trend and the presence of
+seasons was evident. Greenland, which is located in the Arctic, was
+affected by positive feedback more, and the weight of the ice sheet
+dropped faster.
 
 ``` r
 ggplot(IceMass,aes(x= year)) + 
@@ -296,60 +249,45 @@ ggplot(IceMass,aes(x= year)) +
   labs(y = "Change of ice mass (Gt)", color = NULL)
 ```
 
-![](climate_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](climate_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
-Both ice sheets showed a clear declining trend and the presence of
-seasons was evident. Greenland, which is located in the Arctic, was
-affected by positive feedback more, and the weight of the ice sheet
-dropped faster.
-
-# Exercise III: Rising Sea Levels?
+# Exploring Rising Sea Levels in R
 
 - Data description: <http://climate.nasa.gov/vital-signs/sea-level/>
 - Raw data file:
   <http://climate.nasa.gov/system/internal_resources/details/original/121_Global_Sea_Level_Data_File.txt>
 
-## Question 1:
+## Background information of the data
 
-- Describe the data set: What are the columns and units?
+There are 12 columns in the data set and we are only going to present 3
+of them to make the table clean and useful. The 12 columns are: HDR 1
+altimeter type 0=dual-frequency 999=single frequency (ie Poseidon-1) HDR
+2 merged file cycle \# HDR 3 year+fraction of year (mid-cycle) HDR 4
+number of observations HDR 5 number of weighted observations HDR 6 GMSL
+(Global Isostatic Adjustment (GIA) not applied) variation (mm) with
+respect to TOPEX collinear mean reference HDR 7 standard deviation of
+GMSL (GIA not applied) variation estimate (mm) HDR 8 smoothed (60-day
+Gaussian type filter) GMSL (GIA not applied) variation (mm)  
 
-  There are 12 columns in the data set and we are only going to present
-  3 of them to make the table clean and useful. The 12 columns are: HDR
-  1 altimeter type 0=dual-frequency 999=single frequency (ie Poseidon-1)
-  HDR 2 merged file cycle \# HDR 3 year+fraction of year (mid-cycle) HDR
-  4 number of observations HDR 5 number of weighted observations HDR 6
-  GMSL (Global Isostatic Adjustment (GIA) not applied) variation (mm)
-  with respect to TOPEX collinear mean reference HDR 7 standard
-  deviation of GMSL (GIA not applied) variation estimate (mm) HDR 8
-  smoothed (60-day Gaussian type filter) GMSL (GIA not applied)
-  variation (mm)  
-  HDR 9 GMSL (Global Isostatic Adjustment (GIA) applied) variation (mm)
-  with respect to TOPEX collinear mean reference HDR 10 standard
-  deviation of GMSL (GIA applied) variation estimate (mm) HDR 11
-  smoothed (60-day Gaussian type filter) GMSL (GIA applied)
-  variation (mm) HDR 12 smoothed (60-day Gaussian type filter) GMSL (GIA
-  applied) variation (mm); annual and semi-annual signal removed
+HDR 9 GMSL (Global Isostatic Adjustment (GIA) applied) variation (mm)
+with respect to TOPEX collinear mean reference HDR 10 standard deviation
+of GMSL (GIA applied) variation estimate (mm) HDR 11 smoothed (60-day
+Gaussian type filter) GMSL (GIA applied) variation (mm) HDR 12 smoothed
+(60-day Gaussian type filter) GMSL (GIA applied) variation (mm); annual
+and semi-annual signal removed
 
-- Where do these data come from?
+The calculations were performed by NASA’s Goddard Space Flight Center
+with support from NASA’s Measurement Program. GMSL is generated using
+integrated multi-mission ocean altimeter data. It combines sea surface
+heights from TOPEX/Poseidon, Jason-1, and OSTM/Jason-2 into a common
+ground reference frame.
 
-  The calculations were performed by NASA’s Goddard Space Flight Center
-  with support from NASA’s Measurement Program. GMSL is generated using
-  integrated multi-mission ocean altimeter data. It combines sea surface
-  heights from TOPEX/Poseidon, Jason-1, and OSTM/Jason-2 into a common
-  ground reference frame.
+The data applies and places all inter-mission bias, range, and
+geophysical corrections in a georeference orbit. This creates a
+consistent data record throughout time, regardless of the instrument
+used.
 
-- What is the in-measurement? Resolution of the data? Interpretation of
-  missing values?
-
-  The data applies and places all inter-mission bias, range, and
-  geophysical corrections in a georeference orbit. This creates a
-  consistent data record throughout time, regardless of the instrument
-  used.
-
-## Question 2:
-
-Construct the necessary R code to import this data set as a tidy `Table`
-object.
+## Dataset visualization using R:
 
 ``` r
 SeaLevel<-read_table("http://climate.nasa.gov/system/internal_resources/details/original/121_Global_Sea_Level_Data_File.txt",
@@ -395,9 +333,12 @@ SeaLevel
     ## 10 1993. -18.5            -8.76
     ## # ℹ 837 more rows
 
-## Question 3:
+## Data plotting and trend analysis:
 
-Plot the data and describe the trends you observe.
+The trend of sea level rise is very clear, and the seasonal and
+meteorological effects are very strong, as can be seen by comparing the
+rough curve. However, it has risen by about 10cm in 30 years, which is
+already a very obvious upward trend.
 
 ``` r
 ggplot(SeaLevel,aes(x= year)) + 
@@ -407,12 +348,7 @@ ggplot(SeaLevel,aes(x= year)) +
   labs(y = "Change of sea level(mm)", color = NULL)
 ```
 
-![](climate_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
-
-The trend of sea level rise is very clear, and the seasonal and
-meteorological effects are very strong, as can be seen by comparing the
-rough curve. However, it has risen by about 10cm in 30 years, which is
-already a very obvious upward trend.
+![](climate_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 # Exercise IV: Arctic Sea Ice?
 
@@ -468,7 +404,7 @@ ArcticIce <- ArcticIce [ ,c('Date', 'Extent') ]
 ArcticIce
 ```
 
-    ## # A tibble: 14,743 × 2
+    ## # A tibble: 14,745 × 2
     ##    Date       Extent
     ##    <date>      <dbl>
     ##  1 NA           NA  
@@ -481,7 +417,7 @@ ArcticIce
     ##  8 1978-11-07   11.1
     ##  9 1978-11-09   11.2
     ## 10 1978-11-11   11.3
-    ## # ℹ 14,733 more rows
+    ## # ℹ 14,735 more rows
 
 ## Question 3:
 
@@ -507,7 +443,7 @@ ggplot(ArcticIce,aes(x= Date)) +
 
     ## Warning: Removed 1 row containing missing values (`geom_line()`).
 
-![](climate_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](climate_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 # Exercise V: Longer term trends in CO2 Records
 
@@ -579,7 +515,7 @@ climate <-ggplot(Icecore_co2,aes(x=time)) +
 climate
 ```
 
-![](climate_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](climate_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 - Reverse the ordering to create a chronological record.
 
@@ -633,7 +569,7 @@ ggplot(Icecore_co2,aes(x=time))+
   theme(axis.text.x = element_blank())
 ```
 
-![](climate_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](climate_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 - Join this series to Loa data
 
@@ -692,7 +628,7 @@ ggplot(full_co2,aes(x=time))+
   theme(axis.text.x = element_blank())
 ```
 
-![](climate_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+![](climate_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
 - Describe your conclusions
 
