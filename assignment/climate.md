@@ -119,7 +119,9 @@ increasing after 1920 and with a stronger signal after 1960. It
 indicates the temperature is increased compared to average.
 
 ``` r
-ggplot(climate, aes(x = year, y = annual_average)) + geom_line()
+ggplot(climate, aes(x = year, y = annual_average)) + 
+  geom_line()+
+  labs(y="annual_average_temperature")
 ```
 
 ![](climate_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
@@ -640,6 +642,7 @@ straight line. This recent surge in CO2 is thus unlikely caused solely
 by nature: human activities have played a great role.
 
 All of the above data (CO2, temperature, sea level, glacier volume, ice
-sheet area) prove that climate change is happening. We should try our
-best to prevent the deterioration of these conditions in order to
-protect the fragile ecosystems on which we depend.
+sheet area) collectively evince that climate change is not only
+happening, but at a rapid rate and scale. Humans should take immediate,
+necessary actions to protect the nature as well as ourselves from
+exacerbated climate change issues.

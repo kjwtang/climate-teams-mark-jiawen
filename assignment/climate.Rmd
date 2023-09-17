@@ -73,7 +73,10 @@ climate
 There is an annual variation in the temperature mean, but the trend is increasing after 1920 and with a stronger signal after 1960. It indicates the temperature is increased compared to average.
 
 ```{r}
-ggplot(climate, aes(x = year, y = annual_average)) + geom_line()
+ggplot(climate, aes(x = year, y = annual_average)) + 
+  geom_line()+
+  labs(y="annual_average_temperature")
+
 ```
 
 ## Evaluating the evidence for a "Pause" in warming
@@ -90,7 +93,6 @@ By looking at the data, we did not find evidence in support of such a hiatus aro
 
 ```{r}
 ggplot(climate, aes(x = year, y = five_year_average)) + geom_line()
-
 
 ```
 
@@ -320,4 +322,6 @@ ggplot(full_co2,aes(x = time))+
 
 Based on the Ice core CO2 data, we show constant, moderate natural variations in CO2 level since 400000 years ago, and the range is around 175 to 300 ppm. However, since the Industrial Revolution which happened "recently" in the long Earth's history, CO2 level has risen at an unprecedently considerable rate, as manifested by the almost vertical straight line. This recent surge in CO2 is thus unlikely caused solely by nature: human activities have played a great role.
 
-All of the above data (CO2, temperature, sea level, glacier volume, ice sheet area) prove that climate change is happening. We should try our best to prevent the deterioration of these conditions in order to protect the fragile ecosystems on which we depend.
+All of the above data (CO2, temperature, sea level, glacier volume, ice sheet area) collectively evince that climate change is not only happening, but at a rapid rate and scale. Humans should take immediate, necessary actions to protect the nature as well as ourselves from exacerbated climate change issues.
+
+
