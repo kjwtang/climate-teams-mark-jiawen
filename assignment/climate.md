@@ -121,7 +121,7 @@ indicates the temperature is increased compared to average.
 ``` r
 ggplot(climate, aes(x = year, y = annual_average)) + 
   geom_line()+
-  labs(y="annual_average_temperature")
+  labs(y="annual average temperature in C")
 ```
 
 ![](climate_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
@@ -150,7 +150,9 @@ global temperature change by performing regression analysis.
 - 5 year averages from the annual data:
 
 ``` r
-ggplot(climate, aes(x = year, y = five_year_average)) + geom_line()
+ggplot(climate, aes(x = year, y = five_year_average)) + geom_line() +
+  ggtitle('5 years of average temperature change') +
+  labs(y="temperature change in C ")
 ```
 
 ![](climate_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
@@ -417,7 +419,7 @@ ArcticIce <- ArcticIce [ ,c('Date', 'Extent') ]
 ArcticIce
 ```
 
-    ## # A tibble: 14,746 × 2
+    ## # A tibble: 14,748 × 2
     ##    Date       Extent
     ##    <date>      <dbl>
     ##  1 NA           NA  
@@ -430,7 +432,7 @@ ArcticIce
     ##  8 1978-11-07   11.1
     ##  9 1978-11-09   11.2
     ## 10 1978-11-11   11.3
-    ## # ℹ 14,736 more rows
+    ## # ℹ 14,738 more rows
 
 ## Data plotting and trend:
 
@@ -566,7 +568,7 @@ Icecore_co2
 ``` r
 ggplot(Icecore_co2,aes(x = time))+
   geom_line(aes(y= co2))+
-  labs(x = "years from 414085 years BP to present", title = "Past 400000 years trends in CO2 Records") +
+  labs(x = "years from 414085 years BP to present", title = "Past 400000 years trends in CO2 Records in ppm") +
   theme(axis.text.x = element_blank())
 ```
 
@@ -625,7 +627,7 @@ Plot joined data(full-time scale form 400000 b.p. till 2021)
 #Icecore_co2
 ggplot(full_co2,aes(x = time))+
   geom_line(aes(y = co2))+
-  labs(x = "years from 414099 years BP to present", title = "Past 400000 years trends in CO2 Records") +
+  labs(x = "years from 414099 years BP to present", title = "Past 400000 years trends in CO2 Records in ppm") +
   theme(axis.text.x = element_blank())
 ```
 

@@ -75,7 +75,7 @@ There is an annual variation in the temperature mean, but the trend is increasin
 ```{r}
 ggplot(climate, aes(x = year, y = annual_average)) + 
   geom_line()+
-  labs(y="annual_average_temperature")
+  labs(y="annual average temperature in C")
 
 ```
 
@@ -92,7 +92,9 @@ By looking at the data, we did not find evidence in support of such a hiatus aro
 -   5 year averages from the annual data:
 
 ```{r}
-ggplot(climate, aes(x = year, y = five_year_average)) + geom_line()
+ggplot(climate, aes(x = year, y = five_year_average)) + geom_line() +
+  ggtitle('5 years of average temperature change') +
+  labs(y="temperature change in C ")
 
 ```
 
@@ -286,7 +288,7 @@ Plot the new data:
 Icecore_co2
 ggplot(Icecore_co2,aes(x = time))+
   geom_line(aes(y= co2))+
-  labs(x = "years from 414085 years BP to present", title = "Past 400000 years trends in CO2 Records") +
+  labs(x = "years from 414085 years BP to present", title = "Past 400000 years trends in CO2 Records in ppm") +
   theme(axis.text.x = element_blank())
   
 ```
@@ -314,7 +316,7 @@ Plot joined data(full-time scale form 400000 b.p. till 2021)
 #Icecore_co2
 ggplot(full_co2,aes(x = time))+
   geom_line(aes(y = co2))+
-  labs(x = "years from 414099 years BP to present", title = "Past 400000 years trends in CO2 Records") +
+  labs(x = "years from 414099 years BP to present", title = "Past 400000 years trends in CO2 Records in ppm") +
   theme(axis.text.x = element_blank())
 ```
 
