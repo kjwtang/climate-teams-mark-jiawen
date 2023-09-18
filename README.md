@@ -1,3 +1,5 @@
+
+[![Reproducibility](https://github.com/espm-157/climate-teams-mark-jiawen/actions/workflows/main.yml/badge.svg)](https://github.com/espm-157/climate-teams-mark-jiawen/actions/workflows/main.yml)
 This repository is a template for every teams climate module repository. This is the first module of ESPM 157, intended to
 explore global temperature data to understand how the earth's climate is warming. 
 
